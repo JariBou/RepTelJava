@@ -93,11 +93,9 @@ public class Main{
                     Thread.sleep(100);
                 }
                 if (frame.isPressed()) {
-                    if (hasFiles){
-                        String file = frame.input;
-                        w.setFilename(file);
-                        r.setFilename(file);
-                    }
+                    String file = frame.input;
+                    w.setFilename(file);
+                    r.setFilename(file);
                 }
             } frame.setPressed(false);
 
@@ -107,11 +105,6 @@ public class Main{
                 frame.label2.setText("Current file:  " + w.getFilename());
                 frame.label1.setText("<html>0 - Quit <br/> 1 - Write <br/> 2 - Read <br/> 3 - Get number of persons <br/> 4 - Create new file <br/> 5 - Switch File </html>");
                 frame.consoleOutput.setText("> ");
-                //System.out.println("0 - Quit");
-                //System.out.println("1 - Write");
-                //System.out.println("2 - Read");
-                //System.out.println("3 - Get number of persons");
-                //System.out.println("4 - Create new file ");
                 frame.setPressed(false);
                 String choice = "0";
                 while (!frame.isPressed()) {
@@ -170,7 +163,7 @@ public class Main{
                         ArrayList<String> fileContent = r.read(myReader);
                         StringBuilder numbers = new StringBuilder();
                         boolean found = false;
-                        String search = "tom";
+                        String search = "tom";  // Insert research here
 
                         for (String i : fileContent) {
                             if (found) {
@@ -190,14 +183,8 @@ public class Main{
                         frame.label1.setText("<html> This person's numbers are: "+numbers+" <html/>");
 
 
-
-
-
                         //
 
-                        //File myRead = new File(r.getFilename());
-                        //Scanner myReader = new Scanner(myRead);
-                        //ArrayList<String> fileContent = r.read(myReader);
                         System.out.println("Enter the person's name: ");
                         boolean found1 = false;
                         String search1 = myObj.next();
