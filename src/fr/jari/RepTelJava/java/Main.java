@@ -55,7 +55,6 @@ public class Main{
         // Write and Read init
         Write w = new Write();
         Read r = new Read();
-        Scanner myObj = new Scanner(System.in);  // Create a Scanner object  {DEPRECATED}
         // Path query
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString();
