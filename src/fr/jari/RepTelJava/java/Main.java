@@ -27,7 +27,6 @@ public class Main{
 
     public static void buttonActions(GUI frame, String text, Color color) throws InterruptedException {
         frame.consoleOutput.setForeground(color);
-
         if (text != null){
             frame.consoleOutput.setText("> " + text);
         } else{
@@ -60,7 +59,6 @@ public class Main{
         // Path query
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString();
-
 
         while(true) {
             boolean hasFiles = false;
@@ -108,7 +106,6 @@ public class Main{
                 }
             } frame.setPressed(false);
 
-
             outerloop:
             while (true) {
                 frame.label2.setText("Current file:  " + w.getFilename());
@@ -125,7 +122,7 @@ public class Main{
                 }frame.setPressed(false);
                 switchloop:
                 switch (choice) {
-                    case "0" -> System.exit(0);
+                    case "0" -> System.exit(0); // Done
                     case "1" -> {
                         String filename = w.getFilename();
                         FileWriter myWriter = new FileWriter(filename, true);
@@ -160,9 +157,7 @@ public class Main{
                             frame.setPressed(false);
                         }
                         myWriter.close();
-                    }       // Done
-
-                    // To do:
+                    } // Done
 
                     case "2" -> {
 
@@ -212,9 +207,7 @@ public class Main{
                                 break switchloop;
                             }
                         }
-                    }
-
-                    // Done
+                    } // Should be done
 
                     case "3" -> {
                         File myRead = new File(r.getFilename());
@@ -246,8 +239,7 @@ public class Main{
                             }
                         }
                         frame.setPressed(false);
-                    }
-
+                    } // Done
 
                     case "4" -> {
                         while (true) {
@@ -271,7 +263,7 @@ public class Main{
 
                     case "5" -> {
                         break outerloop;
-                    }
+                    } // Done
                 }
                 frame.input = null;
 
