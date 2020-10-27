@@ -19,9 +19,20 @@ public class Main{
         Thread.sleep(500);
         frame.consoleOutput.setText("> " + w.output);
         w.output = "";
-    } public static void buttonActions(GUI frame) throws InterruptedException {
-        frame.consoleOutput.setForeground(Color.green);
-        frame.consoleOutput.setText("> Click on the 'Ok' button to exit to Menu");
+    }
+
+    public static void buttonActions(GUI frame) throws InterruptedException {
+        buttonActions(frame, null, Color.green);
+    }
+
+    public static void buttonActions(GUI frame, String text, Color color) throws InterruptedException {
+        frame.consoleOutput.setForeground(color);
+
+        if (text != null){
+            frame.consoleOutput.setText("> " + text);
+        } else{
+            frame.consoleOutput.setText("> Click on the 'Ok' button to exit to Menu");
+        }
         frame.button.setVisible(true);
         while (!frame.clicked) {
             Thread.sleep(100);
@@ -87,8 +98,6 @@ public class Main{
             }
             if (hasFiles){
                 frame.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
-
-
                 while (!frame.isPressed()) {
                     Thread.sleep(100);
                 }
@@ -113,8 +122,8 @@ public class Main{
                         choice = frame.input;
                         break;
                     }
-                }
-                frame.setPressed(false);
+                }frame.setPressed(false);
+                switchloop:
                 switch (choice) {
                     case "0" -> System.exit(0);
                     case "1" -> {
@@ -158,49 +167,50 @@ public class Main{
                     case "2" -> {
 
                         //
+                        frame.label1.setText("Enter the person's name to search for: ");
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
                         StringBuilder numbers = new StringBuilder();
-                        boolean found = false;
-                        String search = "tom";  // Insert research here
-
-                        for (String i : fileContent) {
-                            if (found) {
-                                if (testType(i)) {
-                                    numbers.append(" <br/> - ").append(i);
-                                } else {
+                        while (true) {
+                            boolean found = false;
+                            String search = "";
+                            while (!frame.isPressed()) {
+                                Thread.sleep(100);
+                                if (frame.isPressed()) {
+                                    search = frame.input;
                                     break;
                                 }
                             }
-                            if (search.equals(i)) {
-                                found = true;
-                            }
-                        } if(!found){
-                            System.out.println("Person not found");
-                            break;
-                        }
-                        frame.label1.setText("<html> This person's numbers are: "+numbers+" <html/>");
+                            frame.setPressed(false);
 
 
-                        //
-
-                        System.out.println("Enter the person's name: ");
-                        boolean found1 = false;
-                        String search1 = myObj.next();
-                        for (int i = 0; i < fileContent.size(); i++) {
-                            if (search1.equals(fileContent.get(i))) {
-                                if (search1.endsWith("s")) {
-                                    System.out.println(search1 + "' number is " + fileContent.get(i + 1));
-                                } else {
-                                    System.out.println(search1 + "'s number is " + fileContent.get(i + 1));
+                            for (String i : fileContent) {
+                                if (found) {
+                                    if (testType(i)) {
+                                        numbers.append(" <br/> - ").append(i);
+                                    } else {
+                                        break;
+                                    }
                                 }
-                                found1 = true;
-                                break;
+                                if (search.equals(i)) {
+                                    found = true;
+                                }
                             }
-                        }
-                        if (!found1) {
-                            System.out.println("Person not found");
+                            if (!found) {
+
+                                buttonActions(frame, "Person not found, click 'Ok' to try again", Color.red);
+                                frame.consoleOutput.setForeground(Color.green);
+                                frame.consoleOutput.setText("> Please enter a name");
+                            } else {
+                                if (search.endsWith("s")) {
+                                    search += "'";
+                                } else {
+                                    search += "'s";
+                                } frame.label1.setText("<html>" + search + " numbers are: " + numbers + " <html/>");
+                                buttonActions(frame);
+                                break switchloop;
+                            }
                         }
                     }
 
