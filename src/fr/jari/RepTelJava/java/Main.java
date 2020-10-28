@@ -177,8 +177,6 @@ public class Main{
                                 }
                             }
                             frame.setPressed(false);
-
-
                             for (String i : fileContent) {
                                 if (found) {
                                     if (testType(i)) {
