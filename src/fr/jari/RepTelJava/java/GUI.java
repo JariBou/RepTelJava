@@ -1,18 +1,13 @@
 package fr.jari.RepTelJava.java;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Hashtable;
 
 public class GUI extends JFrame {
     private JTextField textField1; // Input
@@ -36,7 +31,6 @@ public class GUI extends JFrame {
     public Font setFontSize(int size){ // Changes the font size, used for button
         return new Font("Arial", Font.PLAIN, size);
     }
-
     public boolean isPressed() { // Returns a boolean of the state of the enter key
         return pressed;
     } public void setPressed(boolean state){ // Sets the boolean state of the enter key
@@ -44,19 +38,16 @@ public class GUI extends JFrame {
     }
 
     public GUI(){
-
-
         //label1.setHorizontalTextPosition(JLabel.LEFT);
         button.setVisible(false);
+        notesLabel.setVisible(true);
+        menuPanel.setVisible(true);
         label1.setFont(defaultFont);
         consoleOutput.setBackground(Color.black);
         add(rootPanel);
         setTitle("RepTel.java");
         setSize(800, 1000);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-
-
         textField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) { // Detects if a key is pressed
@@ -67,7 +58,6 @@ public class GUI extends JFrame {
                     textField1.setText("");
                 }
             }
-
         }); sliderSize.addChangeListener(e -> { // Detects if the slider state changed
             JSlider source = (JSlider)e.getSource();
             if (!source.getValueIsAdjusting()) {
@@ -81,9 +71,7 @@ public class GUI extends JFrame {
             JFrame parentFrame = new JFrame();
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Specify a file to save");
-
             int userSelection = fileChooser.showSaveDialog(parentFrame);
-
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
                 Path path = Path.of(fileToSave.getAbsolutePath());

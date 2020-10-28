@@ -9,7 +9,6 @@ public class Read {
     public void setFilename(String filename) { // Sets the filename
         this.filename = filename + ".txt";
     }
-
     public String getFilename() { // Returns the filename
         return this.filename;
     }
