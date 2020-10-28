@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 @SuppressWarnings("BusyWait")
 public class Main{
-
+    // Console output query and display when writing
     public static void displayWrite(GUI frame, Write w) throws InterruptedException {
         frame.consoleOutput.setForeground(w.color);
         frame.consoleOutput.setText("> ------------------");
@@ -21,10 +21,12 @@ public class Main{
         w.output = "";
     }
 
+    // Default setup
     public static void buttonActions(GUI frame) throws InterruptedException {
         buttonActions(frame, null, Color.green);
     }
 
+    // Button interactions
     public static void buttonActions(GUI frame, String text, Color color) throws InterruptedException {
         frame.consoleOutput.setForeground(color);
         if (text != null){
@@ -47,8 +49,8 @@ public class Main{
         }
     }
 
+    // Main
     public static void main(String[] args) throws IOException, InterruptedException {
-
         // GUI init
         GUI frame = new GUI();
         frame.setVisible(true);
@@ -62,6 +64,7 @@ public class Main{
         while(true) {
             boolean hasFiles = false;
             frame.label2.setText("Current file:  Unknown");
+            // Search for files in directory
             StringBuilder files = new StringBuilder();
             File folder = new File(path);
             File[] listOfFiles = folder.listFiles();
@@ -77,7 +80,7 @@ public class Main{
                     }
                 }
             }
-            if (!hasFiles) {
+            if (!hasFiles) { // New file since no pre-existing file
                 frame.consoleOutput.setForeground(Color.red);
                 frame.consoleOutput.setText("> No existing Files");
                 frame.label1.setText("Enter a filename to be created: ");
@@ -93,7 +96,7 @@ public class Main{
                     }
                 }frame.setPressed(false);
             }
-            if (hasFiles){
+            if (hasFiles){ // Selection of the file
                 frame.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
                 while (!frame.isPressed()) {
                     Thread.sleep(100);
@@ -105,8 +108,9 @@ public class Main{
                 }
             } frame.setPressed(false);
 
-            outerloop:
+            menuloop: // Menu loop, used to change the file
             while (true) {
+                // Menu display
                 frame.label2.setText("Current file:  " + w.getFilename());
                 frame.label1.setText("<html>0 - Quit <br/> 1 - Write <br/> 2 - Read <br/> 3 - Get number of persons <br/> 4 - Create new file <br/> 5 - Switch File </html>");
                 frame.consoleOutput.setText("> ");
@@ -119,10 +123,10 @@ public class Main{
                         break;
                     }
                 }frame.setPressed(false);
-                switchloop:
+                switchloop: // Switch loop, used to exit the switch loop
                 switch (choice) {
-                    case "0" -> System.exit(0); // Done
-                    case "1" -> {
+                    case "0" -> System.exit(0); // Quit
+                    case "1" -> { // Write in the file
                         String filename = w.getFilename();
                         FileWriter myWriter = new FileWriter(filename, true);
                         while (true) {
@@ -156,11 +160,9 @@ public class Main{
                             frame.setPressed(false);
                         }
                         myWriter.close();
-                    } // Done
+                    }
 
-                    case "2" -> {
-
-                        //
+                    case "2" -> { // Search in file
                         frame.label1.setText("Enter the person's name to search for: ");
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
@@ -177,8 +179,6 @@ public class Main{
                                 }
                             }
                             frame.setPressed(false);
-
-
                             for (String i : fileContent) {
                                 if (found) {
                                     if (testType(i)) {
@@ -192,7 +192,6 @@ public class Main{
                                 }
                             }
                             if (!found) {
-
                                 buttonActions(frame, "Person not found, click 'Ok' to try again", Color.red);
                                 frame.consoleOutput.setForeground(Color.green);
                                 frame.consoleOutput.setText("> Please enter a name");
@@ -206,9 +205,9 @@ public class Main{
                                 break switchloop;
                             }
                         }
-                    } // Should be done
+                    }
 
-                    case "3" -> {
+                    case "3" -> { // Get number of persons in file, and fetch names if needed
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
@@ -238,9 +237,9 @@ public class Main{
                             }
                         }
                         frame.setPressed(false);
-                    } // Done
+                    }
 
-                    case "4" -> {
+                    case "4" -> { // Create a new file
                         while (true) {
                             frame.label1.setText("Enter the filename: ");
                             while (!frame.isPressed()) {
@@ -258,11 +257,11 @@ public class Main{
                             }
                             frame.setPressed(false);
                         }
-                    } //Done
+                    }
 
-                    case "5" -> {
-                        break outerloop;
-                    } // Done
+                    case "5" -> { // Breaks the Menu loop to change file
+                        break menuloop;
+                    }
                 }
                 frame.input = null;
             }
