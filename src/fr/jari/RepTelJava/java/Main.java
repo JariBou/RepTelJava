@@ -190,7 +190,6 @@ public class Main{
                                 }
                             }
                             if (!found) {
-
                                 buttonActions(frame, "Person not found, click 'Ok' to try again", Color.red);
                                 frame.consoleOutput.setForeground(Color.green);
                                 frame.consoleOutput.setText("> Please enter a name");
