@@ -265,7 +265,6 @@ public class Main{
                     } // Done
                 }
                 frame.input = null;
-
             }
         }
     }
