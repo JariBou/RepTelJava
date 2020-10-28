@@ -13,7 +13,7 @@ import java.util.Scanner;
 @SuppressWarnings("BusyWait")
 public class Main{
     // Console output query and display when writing
-    public static void displayWrite(GUI frame, Write w) throws InterruptedException {
+    public static void displayWrite(mainGUI frame, Write w) throws InterruptedException {
         frame.consoleOutput.setForeground(w.color);
         frame.consoleOutput.setText("> ------------------");
         Thread.sleep(500);
@@ -22,12 +22,12 @@ public class Main{
     }
 
     // Default setup
-    public static void buttonActions(GUI frame) throws InterruptedException {
+    public static void buttonActions(mainGUI frame) throws InterruptedException {
         buttonActions(frame, null, Color.green);
     }
 
     // Button interactions
-    public static void buttonActions(GUI frame, String text, Color color) throws InterruptedException {
+    public static void buttonActions(mainGUI frame, String text, Color color) throws InterruptedException {
         frame.consoleOutput.setForeground(color);
         if (text != null){
             frame.consoleOutput.setText("> " + text);
@@ -52,7 +52,7 @@ public class Main{
     // Main
     public static void main(String[] args) throws IOException, InterruptedException {
         // GUI init
-        GUI frame = new GUI();
+        mainGUI frame = new mainGUI();
         frame.setVisible(true);
         // Write and Read init
         Write w = new Write();

@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class GUI extends JFrame {
+public class mainGUI extends JFrame {
     private JTextField textField1; // Input
     public JLabel label1; // Main Display
     private JPanel rootPanel;
@@ -37,7 +37,7 @@ public class GUI extends JFrame {
         this.pressed = state;
     }
 
-    public GUI(){
+    public mainGUI(){
         //label1.setHorizontalTextPosition(JLabel.LEFT);
         button.setVisible(false);
         notesLabel.setVisible(true);
