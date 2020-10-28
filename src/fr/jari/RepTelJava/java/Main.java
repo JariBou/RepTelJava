@@ -228,7 +228,8 @@ public class Main{
                                 }
                             }
                             frame.setPressed(false);
-                            for (String i : fileContent) {
+                            int start = fileContent.indexOf(search);
+                            for (String i : fileContent.subList(start, fileContent.size())) {
                                 if (found) {
                                     if (testType(i)) {
                                         numbers.append(" <br/> - ").append(i);
@@ -249,7 +250,7 @@ public class Main{
                                     search += "'";
                                 } else {
                                     search += "'s";
-                                } frame.label1.setText("<html>" + search + " numbers are: " + numbers + " <html/>");
+                                } frame.label1.setText("<html>" + search + " numbers are: " + numbers +"<br/" + "Do you want to modify? M/N" + "<br/>" + " <html/>");
                                 buttonActions(frame);
                                 myReader.close();
                                 break switchloop;
