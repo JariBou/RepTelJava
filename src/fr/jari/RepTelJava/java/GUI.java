@@ -76,41 +76,26 @@ public class GUI extends JFrame {
 
             }
         }); button.addActionListener(e -> clicked = true); // Button clicked detection
-        exportNotes.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // insert save file
+        exportNotes.addActionListener(e -> { // Exports notes to .txt File
+            String content = notes.getText();
+            JFrame parentFrame = new JFrame();
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Specify a file to save");
 
-                String content = notes.getText();
+            int userSelection = fileChooser.showSaveDialog(parentFrame);
 
-
-
-
-                JFrame parentFrame = new JFrame();
-
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Specify a file to save");
-
-                int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-                if (userSelection == JFileChooser.APPROVE_OPTION) {
-                    File fileToSave = fileChooser.getSelectedFile();
-                    Path path = Path.of(fileToSave.getAbsolutePath());
-                    w.create("", path);
-                    try {
-                        System.out.println(path);
-                        System.out.println(content);
-                        FileWriter myWriter = new FileWriter(path + ".txt", true);
-                        myWriter.write(content);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    }
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                File fileToSave = fileChooser.getSelectedFile();
+                Path path = Path.of(fileToSave.getAbsolutePath());
+                w.create("", path);
+                try {
+                    String path2 = (path + ".txt").replace("\\", "\\\\");
+                    FileWriter myWriterGUI = new FileWriter(path2, false);
+                    myWriterGUI.write(content);
+                    myWriterGUI.close();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
-
-
-
-
-
             }
         });
     }
