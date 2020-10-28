@@ -128,8 +128,9 @@ public class Main{
                     case "0" -> System.exit(0); // Quit
                     case "1" -> { // Write in the file
                         String filename = w.getFilename();
-                        FileWriter myWriter = new FileWriter(filename, true);
+                        File myRead = new File(r.getFilename());
                         while (true) {
+                            Scanner myReader = new Scanner(myRead);
                             frame.label1.setText("Enter a name (0 to quit): ");
                             while (!frame.isPressed()) {
                                 Thread.sleep(100);
@@ -140,26 +141,74 @@ public class Main{
                                     break;
                                 }
                                 frame.label1.setText("Enter a name: " + name);
-                                w.write(name + "\n", myWriter);
-                                displayWrite(frame, w);
-                            }
-                            frame.setPressed(false);
-                            frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
-                            while (!frame.isPressed()) {
-                                Thread.sleep(100);
-                            }
-                            if (frame.isPressed()) {
-                                String number = frame.input;
-                                if (number.equals("0")) {
-                                    break;
+                                ArrayList<String> filecontent = r.read(myReader);
+                                if (filecontent.contains(name)){
+                                    frame.consoleOutput.setForeground(Color.red);
+                                    frame.consoleOutput.setText("> Name already assigned, add a number to that person? Y/N");
+                                    frame.setPressed(false);
+                                    while (!frame.isPressed()) {
+                                        Thread.sleep(100);
+                                    }
+                                    if (frame.isPressed()) {
+                                        String add = frame.input;
+                                        frame.setPressed(false);
+                                        if (add.equals("Y")){
+                                            FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                            boolean found = false;
+                                            int start = filecontent.indexOf(name);
+                                            for (String i : filecontent.subList(start, filecontent.size())) {
+                                                if (found) {
+                                                    if (!testType(i)) {
+                                                        int pos = filecontent.indexOf(i);
+                                                        frame.consoleOutput.setText("> ");
+                                                        frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
+                                                        while(!frame.isPressed()){
+                                                            Thread.sleep(100);
+                                                        } if (frame.isPressed()){
+                                                            String number = frame.input;
+                                                            filecontent.add(pos, number);
+                                                        } frame.setPressed(false);
+                                                        StringBuilder filecontentStr = new StringBuilder();
+                                                        for (String k : filecontent){
+                                                            filecontentStr.append(k).append("\n");
+                                                        } w.write(filecontentStr.toString(), myWriter);
+                                                        displayWrite(frame, w);
+                                                        myWriter.close();
+                                                        break;
+                                                    }
+                                                }
+                                                if (name.equals(i)) {
+                                                    found = true;
+                                                }
+                                            }
+                                        }
+                                        if (add.equals("N")) {
+                                            break;
+                                        }
+                                    } myReader.close();
+                                    frame.setPressed(false);
                                 }
-                                frame.label1.setText(frame.label1.getText() + number);
-                                w.write(number + "\n", myWriter);
-                                displayWrite(frame, w);
+                                else{
+                                    FileWriter myWriter = new FileWriter(filename, true); // if not you good bruv
+                                    frame.setPressed(false);
+                                    frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
+                                    while (!frame.isPressed()) {
+                                        Thread.sleep(100);
+                                    }
+                                    if (frame.isPressed()) {
+                                        String number = frame.input;
+                                        if (number.equals("0")) {
+                                            break;
+                                        }
+                                        frame.label1.setText(frame.label1.getText() + number);
+                                        w.write(name + "\n" + number + "\n", myWriter);
+                                        displayWrite(frame, w);
+                                    }
+                                    frame.setPressed(false);
+                                    myWriter.close();
+                                }
                             }
-                            frame.setPressed(false);
                         }
-                        myWriter.close();
                     }
 
                     case "2" -> { // Search in file
@@ -202,6 +251,7 @@ public class Main{
                                     search += "'s";
                                 } frame.label1.setText("<html>" + search + " numbers are: " + numbers + " <html/>");
                                 buttonActions(frame);
+                                myReader.close();
                                 break switchloop;
                             }
                         }

@@ -55,6 +55,9 @@ public class GUI extends JFrame {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){ // Detects if the key pressed is Enter
                     setPressed(true);
                     input = textField1.getText();
+                    if (input.equals("close")){
+                        System.exit(1);
+                    }
                     textField1.setText("");
                 }
             }
