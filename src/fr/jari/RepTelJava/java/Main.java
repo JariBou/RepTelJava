@@ -15,8 +15,7 @@ import java.util.Scanner;
 public class Main{
     // Console output query and display when writing
     public static void displayWrite(mainGUI f, Write w) throws InterruptedException {
-        f.consoleOutput.setForeground(w.color);
-        f.consoleOutput.setText("> ------------------");
+        f.setConsoleOutput("> ------------------", w.color);
         Thread.sleep(500);
         f.consoleOutput.setText("> " + w.output);
         w.output = "";
@@ -52,6 +51,8 @@ public class Main{
 
     // Main
     public static void main(String[] args) throws IOException, InterruptedException {
+        Color GREEN = Color.green;
+        Color RED = Color.red;
         // GUI init
         mainGUI f = new mainGUI();
         f.setVisible(true);
@@ -82,8 +83,7 @@ public class Main{
                 }
             }
             if (!hasFiles) { // New file since no pre-existing file
-                f.consoleOutput.setForeground(Color.red);
-                f.consoleOutput.setText("> No existing Files");
+                f.setConsoleOutput("> No existing Files", RED);
                 f.label1.setText("Enter a filename to be created: ");
                 while (!f.isPressed()) {
                     Thread.sleep(100);
@@ -144,8 +144,7 @@ public class Main{
                                 f.label1.setText("Enter a name: " + name);
                                 ArrayList<String> filecontent = r.read(myReader);
                                 if (filecontent.contains(name)){
-                                    f.consoleOutput.setForeground(Color.red);
-                                    String add = f.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")), "> Name already assigned, add a number to that person? Y/N", Color.red);
+                                    String add = f.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")), "> Name already assigned, add a number to that person? Y/N", RED);
                                     f.setPressed(false);
                                     if (add.equals("Y")){
                                         FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
@@ -240,9 +239,8 @@ public class Main{
                                 }
                             }
                             if (!found) {
-                                buttonActions(f, "Person not found, click 'Ok' to try again", Color.red);
-                                f.consoleOutput.setForeground(Color.green);
-                                f.consoleOutput.setText("> Please enter a name");
+                                buttonActions(f, "Person not found, click 'Ok' to try again", RED);
+                                f.setConsoleOutput("> Please enter a name", GREEN);
                             } else {
                                 if (search.endsWith("s")) {
                                     searchE = search + "'";
@@ -250,7 +248,7 @@ public class Main{
                                     searchE = search + "'s";
                                 } f.label1.setText("<html>" + searchE + " numbers are: " + numbers +"<br/" + "Do you want to modify them? M/N" + "<br/>" + " <html/>");
 
-                                choice =  f.setChoiceBox(new ArrayList<>( Arrays.asList("M", "N")));
+                                choice =  f.setChoiceBox(new ArrayList<>( Arrays.asList("N", "M")));
                                 if (choice.equals("M")){
                                     f.label1.setText("<html>" + searchE + " numbers are: " + numbers +"<br/" + "Choose your option from the list:" +
                                             "<br/>" + "- Modify a number <br/>" + "- Add a number <br/>" + "- Remove a number <br/>"
@@ -270,10 +268,20 @@ public class Main{
                                                 hardCount ++;
                                             }
                                             int posN = Integer.parseInt(f.setChoiceBox(countNumb));
-                                            String oldNumber = fileContent.get(posN-1); // old number
-                                            String newNumber = "6666666666666666666"; // new number
-
+                                            String oldNumber = fileContent.get(posN); // old number
+                                            f.setConsoleOutput("> Enter the new number", GREEN);
+                                            while (!f.isPressed()){
+                                                Thread.sleep(100);
+                                            }
+                                            String newNumber = f.input;
                                             filecontent.set(filecontent.indexOf(oldNumber), newNumber);
+                                            FileWriter myWriter = new FileWriter(filename, false);
+                                            StringBuilder filecontentStr = new StringBuilder();
+                                            for (String a : filecontent){
+                                                filecontentStr.append(a).append("\n");
+                                            }
+                                            w.write(filecontentStr.toString(), myWriter);
+                                            myWriter.close();
                                             break;
 
                                         case "add":
@@ -282,7 +290,7 @@ public class Main{
                                             for (String line : filecontent.subList(start, filecontent.size())) {
                                                 if (found) {
                                                     if (!testType(line)) {
-                                                        FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                                        myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
                                                         int pos = filecontent.indexOf(line);
                                                         f.label1.setText("Enter the number you wish to add");
                                                         while(!f.isPressed()){
@@ -291,7 +299,7 @@ public class Main{
                                                             String number = f.input;
                                                             filecontent.add(pos, number);
                                                         } f.setPressed(false);
-                                                        StringBuilder filecontentStr = new StringBuilder();
+                                                        filecontentStr = new StringBuilder();
                                                         for (String k : filecontent){
                                                             filecontentStr.append(k).append("\n");
                                                         } w.write(filecontentStr.toString(), myWriter);
@@ -307,26 +315,35 @@ public class Main{
                                             break;
 
                                         case "remove":
+                                            f.label1.setText("<html>" + searchE + " numbers are: " + numbers +"<html/>"); // print the numbers with an associated number
+                                            int hardCountR = 1;
+                                            ArrayList<String> countNumbR = new ArrayList<>();
+                                            while(hardCountR <= count){
+                                                countNumbR.add(Integer.toString(hardCountR));
+                                                hardCountR ++;
+                                            }
+                                            int posNR = Integer.parseInt(f.setChoiceBox(countNumbR));
+                                            filecontent.remove(posNR);
+                                            f.setConsoleOutput("> Number removed", GREEN);
+                                            Thread.sleep(500);
+                                            myWriter = new FileWriter(filename, false);
+                                            filecontentStr = new StringBuilder();
+                                            for (String o : filecontent){
+                                                filecontentStr.append(o).append("\n");
+                                            }
+                                            w.write(filecontentStr.toString(), myWriter);
+                                            myWriter.close();
                                             break;
 
                                         case "delete":
                                             break;
                                     }
-
-
                                 } else{
                                     myReader.close();
                                     break switchloop;
                                 }
-
-
-
-
-                                buttonActions(f);
-                                f.label1.setText("OK");
-                                myReader.close();
                                 break switchloop;
-                            }
+                            }myReader.close();
                         }
                     }
 

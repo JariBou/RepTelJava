@@ -28,6 +28,7 @@ public class mainGUI extends JFrame {
     public boolean pressed;
     public boolean clicked;
 
+
     Write w = new Write();
 
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
@@ -43,6 +44,12 @@ public class mainGUI extends JFrame {
     public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
         return setChoiceBox(list, null, Color.green);
     }
+
+    public void setConsoleOutput(String text, Color color){
+        consoleOutput.setForeground(color);
+        consoleOutput.setText(text);
+    }
+
 
     public String setChoiceBox(ArrayList<String> list, String message, Color color) throws InterruptedException {
         choiceBox.setVisible(true);
