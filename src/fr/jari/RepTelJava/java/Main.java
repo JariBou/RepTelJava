@@ -213,9 +213,10 @@ public class Main{
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
                         StringBuilder numbers = new StringBuilder();
+                        ArrayList<String> numbersList = new ArrayList<>();
                         while (true) {
                             boolean found = false;
-                            String searchE = "";
+                            String searchE;
                             String search = "";
                             while (!f.isPressed()) {
                                 Thread.sleep(100);
@@ -226,10 +227,13 @@ public class Main{
                             }
                             f.setPressed(false);
                             int start = fileContent.indexOf(search);
+                            int count = 0;
                             for (String i : fileContent.subList(start, fileContent.size())) {
+                                count ++;
                                 if (found) {
                                     if (testType(i)) {
-                                        numbers.append(" <br/> - ").append(i);
+                                        numbers.append(" <br/>").append(count).append("- ").append(i);
+                                        numbersList.add(i);
                                     } else {
                                         break;
                                     }
@@ -255,15 +259,20 @@ public class Main{
                                             "<br/>" + "- Modify a number <br/>" + "- Add a number <br/>" + "- Remove a number <br/>"
                                             + "- Delete the person <br/>" + " <html/>");
                                     choice = f.setChoiceBox(new ArrayList<>( Arrays.asList("modify", "add", "remove", "delete")));
+                                    myRead = new File(r.getFilename());
+                                    myReader = new Scanner(myRead);
+                                    String filename = w.getFilename();
+                                    ArrayList<String> filecontent = r.read(myReader);
                                     switch (choice){
                                         case "modify":
-                                            break;
+                                            // print the numbers with an associated number
+                                            // chosen number to real number
+                                            String newNumber = ""; // new number
+                                            String oldNumber = ""; // old number
+                                            filecontent.set(filecontent.indexOf(oldNumber), newNumber);
+
 
                                         case "add":
-                                            String filename = w.getFilename();
-                                            myRead = new File(r.getFilename());
-                                            myReader = new Scanner(myRead);
-                                            ArrayList<String> filecontent = r.read(myReader);
                                             found = false;
                                             start = filecontent.indexOf(search);
                                             for (String line : filecontent.subList(start, filecontent.size())) {
