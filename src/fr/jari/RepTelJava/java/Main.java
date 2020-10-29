@@ -215,6 +215,7 @@ public class Main{
                         StringBuilder numbers = new StringBuilder();
                         while (true) {
                             boolean found = false;
+                            String searchE = "";
                             String search = "";
                             while (!f.isPressed()) {
                                 Thread.sleep(100);
@@ -243,10 +244,70 @@ public class Main{
                                 f.consoleOutput.setText("> Please enter a name");
                             } else {
                                 if (search.endsWith("s")) {
-                                    search += "'";
+                                    searchE = search + "'";
                                 } else {
-                                    search += "'s";
-                                } f.label1.setText("<html>" + search + " numbers are: " + numbers +"<br/" + "Do you want to modify? M/N" + "<br/>" + " <html/>");
+                                    searchE = search + "'s";
+                                } f.label1.setText("<html>" + searchE + " numbers are: " + numbers +"<br/" + "Do you want to modify them? M/N" + "<br/>" + " <html/>");
+
+                                choice =  f.setChoiceBox(new ArrayList<>( Arrays.asList("M", "N")));
+                                if (choice.equals("M")){
+                                    f.label1.setText("<html>" + searchE + " numbers are: " + numbers +"<br/" + "Choose your option from the list:" +
+                                            "<br/>" + "- Modify a number <br/>" + "- Add a number <br/>" + "- Remove a number <br/>"
+                                            + "- Delete the person <br/>" + " <html/>");
+                                    choice = f.setChoiceBox(new ArrayList<>( Arrays.asList("modify", "add", "remove", "delete")));
+                                    switch (choice){
+                                        case "modify":
+                                            break;
+
+                                        case "add":
+                                            String filename = w.getFilename();
+                                            myRead = new File(r.getFilename());
+                                            myReader = new Scanner(myRead);
+                                            ArrayList<String> filecontent = r.read(myReader);
+                                            found = false;
+                                            start = filecontent.indexOf(search);
+                                            for (String line : filecontent.subList(start, filecontent.size())) {
+                                                if (found) {
+                                                    if (!testType(line)) {
+                                                        FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                                        int pos = filecontent.indexOf(line);
+                                                        f.label1.setText("Enter the number you wish to add");
+                                                        while(!f.isPressed()){
+                                                            Thread.sleep(100);
+                                                        } if (f.isPressed()){
+                                                            String number = f.input;
+                                                            filecontent.add(pos, number);
+                                                        } f.setPressed(false);
+                                                        StringBuilder filecontentStr = new StringBuilder();
+                                                        for (String k : filecontent){
+                                                            filecontentStr.append(k).append("\n");
+                                                        } w.write(filecontentStr.toString(), myWriter);
+                                                        displayWrite(f, w);
+                                                        myWriter.close();
+                                                        break;
+                                                    }
+                                                }
+                                                if (search.equals(line)) {
+                                                    found = true;
+                                                }
+                                            }
+
+                                        case "remove":
+                                            break;
+
+                                        case "delete":
+                                            break;
+                                    }
+
+
+                                } else{
+                                    myReader.close();
+                                    break switchloop;
+                                }
+
+
+
+
                                 buttonActions(f);
                                 f.label1.setText("OK");
                                 myReader.close();
