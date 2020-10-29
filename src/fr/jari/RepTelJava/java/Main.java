@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -145,47 +146,44 @@ public class Main{
                                 if (filecontent.contains(name)){
                                     frame.consoleOutput.setForeground(Color.red);
                                     frame.consoleOutput.setText("> Name already assigned, add a number to that person? Y/N");
+                                    String add = frame.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")));
                                     frame.setPressed(false);
-                                    while (!frame.isPressed()) {
-                                        Thread.sleep(100);
-                                    }
-                                    if (frame.isPressed()) {
-                                        String add = frame.input;
-                                        frame.setPressed(false);
-                                        if (add.equals("Y")){
-                                            FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
-                                            boolean found = false;
-                                            int start = filecontent.indexOf(name);
-                                            for (String i : filecontent.subList(start, filecontent.size())) {
-                                                if (found) {
-                                                    if (!testType(i)) {
-                                                        int pos = filecontent.indexOf(i);
-                                                        frame.consoleOutput.setText("> ");
-                                                        frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
-                                                        while(!frame.isPressed()){
-                                                            Thread.sleep(100);
-                                                        } if (frame.isPressed()){
-                                                            String number = frame.input;
-                                                            filecontent.add(pos, number);
-                                                        } frame.setPressed(false);
-                                                        StringBuilder filecontentStr = new StringBuilder();
-                                                        for (String k : filecontent){
-                                                            filecontentStr.append(k).append("\n");
-                                                        } w.write(filecontentStr.toString(), myWriter);
-                                                        displayWrite(frame, w);
-                                                        myWriter.close();
-                                                        break;
-                                                    }
-                                                }
-                                                if (name.equals(i)) {
-                                                    found = true;
+                                    if (add.equals("Y")){
+                                        FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                        boolean found = false;
+                                        int start = filecontent.indexOf(name);
+                                        for (String i : filecontent.subList(start, filecontent.size())) {
+                                            if (found) {
+                                                if (!testType(i)) {
+                                                    int pos = filecontent.indexOf(i);
+                                                    frame.consoleOutput.setText("> ");
+                                                    frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
+                                                    while(!frame.isPressed()){
+                                                        Thread.sleep(100);
+                                                    } if (frame.isPressed()){
+                                                        String number = frame.input;
+                                                        filecontent.add(pos, number);
+                                                    } frame.setPressed(false);
+                                                    StringBuilder filecontentStr = new StringBuilder();
+                                                    for (String k : filecontent){
+                                                        filecontentStr.append(k).append("\n");
+                                                    } w.write(filecontentStr.toString(), myWriter);
+                                                    displayWrite(frame, w);
+                                                    myWriter.close();
+                                                    break;
                                                 }
                                             }
+                                            if (name.equals(i)) {
+                                                found = true;
+                                            }
                                         }
-                                        if (add.equals("N")) {
-                                            break;
-                                        }
-                                    } myReader.close();
+                                    }
+                                    if (add.equals("N")) {
+                                        break;
+                                    }
+
+
+                                    myReader.close();
                                     frame.setPressed(false);
                                 }
                                 else{

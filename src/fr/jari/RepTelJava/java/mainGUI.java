@@ -52,6 +52,9 @@ public class mainGUI extends JFrame {
             Thread.sleep(100);
         } clicked = false;
         int choice = choiceBox.getSelectedIndex();
+        choiceBox.setVisible(false);
+        choiceBox.removeAllItems();
+        button.setVisible(false);
         return list.get(choice);
 
     }
