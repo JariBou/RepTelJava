@@ -76,7 +76,6 @@ public class mainGUI extends JFrame {
         button.setVisible(false);
         choiceBox.removeAllItems();
         return list.get(choice);
-
     }
 
     public mainGUI(){
