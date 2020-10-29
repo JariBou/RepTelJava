@@ -1,4 +1,5 @@
 import fr.jari.RepTelJava.java.Read;
+import fr.jari.RepTelJava.java.mainGUI;
 
 import javax.swing.*;
 import java.io.File;
@@ -11,19 +12,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class tests {
-    public static void main(String[] args) throws FileNotFoundException {
 
-        JFrame parentFrame = new JFrame();
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify a file to save");
-
-        int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
-            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+    public static void main(String[] args) throws FileNotFoundException, InterruptedException {
+        mainGUI frame = new mainGUI();
+        frame.setVisible(true);
+        ArrayList<String> list = new ArrayList<>();
+        list.add("Y");
+        list.add("N");
+        String box = frame.setChoiceBox(list);
+        switch (box) {
+            case "Y" -> System.out.println("WTF");
+            case "N" -> System.out.println("Nope");
         }
+
+
 
 
 

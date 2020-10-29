@@ -42,7 +42,11 @@ public class mainGUI extends JFrame {
     }
 
     public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
-        return setChoiceBox(list, null, Color.green);
+        return setChoiceBox(list, null, Color.green, true);
+    } public String setChoiceBox(ArrayList<String> list, boolean display) throws InterruptedException {
+        return setChoiceBox(list, null, Color.green, display);
+    } public String setChoiceBox(ArrayList<String> list, String message, Color color) throws InterruptedException {
+        return setChoiceBox(list, message, color, true);
     }
 
     public void setConsoleOutput(String text, Color color){
@@ -50,14 +54,15 @@ public class mainGUI extends JFrame {
         consoleOutput.setText(text);
     }
 
-
-    public String setChoiceBox(ArrayList<String> list, String message, Color color) throws InterruptedException {
+    public String setChoiceBox(ArrayList<String> list, String message, Color color, boolean display) throws InterruptedException {
         choiceBox.setVisible(true);
         for (String s : list){
             choiceBox.addItem(s);
         }
         consoleOutput.setForeground(color);
-        consoleOutput.setText(Objects.requireNonNullElse(message, "> Select your choice, then click the 'ok' button"));
+        if (display) {
+            consoleOutput.setText(Objects.requireNonNullElse(message, "> Select your choice, then click the 'ok' button"));
+        }
         button.setVisible(true);
         while (!clicked) {
             //noinspection BusyWait

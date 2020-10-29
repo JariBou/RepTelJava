@@ -68,6 +68,7 @@ public class Main{
             f.label2.setText("Current file:  Unknown");
             // Search for files in directory
             StringBuilder files = new StringBuilder();
+            ArrayList<String> filesList = new ArrayList<>();
             File folder = new File(path);
             File[] listOfFiles = folder.listFiles();
             if (listOfFiles == null){
@@ -77,6 +78,7 @@ public class Main{
                     if (listOfFile.isFile()) {
                         if (listOfFile.getName().endsWith(".txt")) {
                             hasFiles = true;
+                            filesList.add(listOfFile.getName().replace(".txt", ""));
                             files.append("<br/> - ").append(listOfFile.getName().replace(".txt", ""));
                         }
                     }
@@ -91,6 +93,8 @@ public class Main{
                     String fileName = f.input;
                     w.create(fileName);
                     displayWrite(f, w);
+                    w.setFilename(fileName);
+                    r.setFilename(fileName);
                     if (w.color == Color.green) {
                         Thread.sleep(100);
                         f.setPressed(false);
@@ -98,14 +102,41 @@ public class Main{
                 }f.setPressed(false);
             }
             if (hasFiles){ // Selection of the file
-                f.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
-                while (!f.isPressed()) {
-                    Thread.sleep(100);
-                }
-                if (f.isPressed()) {
-                    String file = f.input;
-                    w.setFilename(file);
-                    r.setFilename(file);
+                while (true) {
+                    f.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
+                    while (!f.isPressed()) {
+                        Thread.sleep(100);
+                    }
+                    if (f.isPressed()) {
+                        String file = f.input;
+                        if (filesList.contains(file)) {
+                            w.setFilename(file);
+                            r.setFilename(file);
+                            break;
+                        } else {
+                            f.setConsoleOutput(("> File " + file + ".txt doesn't exist, Create?"), RED);
+                            String newFile = f.setChoiceBox(new ArrayList<>( Arrays.asList("Yes", "No")), false);
+                            if (newFile.equals("Yes")){
+                                f.label1.setText("Enter a filename to be created: ");
+                                while (!f.isPressed()) {
+                                    Thread.sleep(100);
+                                } if (f.isPressed()) {
+                                    String fileName = f.input;
+                                    w.create(fileName);
+                                    displayWrite(f, w);
+                                    w.setFilename(fileName);
+                                    r.setFilename(fileName);
+                                    if (w.color == Color.green) {
+                                        Thread.sleep(100);
+                                        f.setPressed(false);
+                                    }
+                                }f.setPressed(false);
+                                break;
+                            } else {
+                                System.exit(0);
+                            }
+                        }
+                    }
                 }
             } f.setPressed(false);
 
