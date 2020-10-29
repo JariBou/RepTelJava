@@ -252,6 +252,7 @@ public class Main{
                                     search += "'s";
                                 } frame.label1.setText("<html>" + search + " numbers are: " + numbers +"<br/" + "Do you want to modify? M/N" + "<br/>" + " <html/>");
                                 buttonActions(frame);
+                                frame.label1.setText("OK");
                                 myReader.close();
                                 break switchloop;
                             }

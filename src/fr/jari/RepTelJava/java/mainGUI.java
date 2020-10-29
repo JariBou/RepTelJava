@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 public class mainGUI extends JFrame {
     private JTextField textField1; // Input
@@ -21,6 +22,7 @@ public class mainGUI extends JFrame {
     public JLabel consoleOutput; // Console Display
     public JButton button; // Button
     private JButton exportNotes;
+    private JComboBox<String> choiceBox;
     public String input; // Value of the Input Display
     public boolean pressed;
     public boolean clicked;
@@ -37,11 +39,29 @@ public class mainGUI extends JFrame {
         this.pressed = state;
     }
 
+    public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
+        choiceBox.setVisible(true);
+        for (String s : list){
+            choiceBox.addItem(s);
+        }
+        consoleOutput.setForeground(Color.green);
+        consoleOutput.setText("> Select your choice, then click the 'ok' button");
+        button.setVisible(true);
+        while (!clicked) {
+            //noinspection BusyWait
+            Thread.sleep(100);
+        } clicked = false;
+        int choice = choiceBox.getSelectedIndex();
+        return list.get(choice);
+
+    }
+
     public mainGUI(){
         //label1.setHorizontalTextPosition(JLabel.LEFT);
         button.setVisible(false);
         notesLabel.setVisible(true);
         menuPanel.setVisible(true);
+        choiceBox.setVisible(false);
         label1.setFont(defaultFont);
         consoleOutput.setBackground(Color.black);
         add(rootPanel);
