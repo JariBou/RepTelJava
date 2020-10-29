@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -28,6 +29,11 @@ public class fileGUI extends JFrame{
         textArea.setFont(defaultFont);
         textArea.setVisible(true);
         sizeLabel.setVisible(true);
+        Path currentRelativePath = Paths.get("");
+        String imPath = currentRelativePath.toAbsolutePath().toString();
+        ImageIcon icon = new ImageIcon(imPath + "/icons/mainIcon.png");
+        setIconImage(icon.getImage());
+        setTitle("RepTel.java");
         //scroll.setVisible(true);
         add(mainPanel);
         setTitle(filename);

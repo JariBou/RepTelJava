@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -86,6 +87,10 @@ public class mainGUI extends JFrame {
         label1.setFont(defaultFont);
         consoleOutput.setBackground(Color.black);
         add(rootPanel);
+        Path currentRelativePath = Paths.get("");
+        String imPath = currentRelativePath.toAbsolutePath().toString();
+        ImageIcon icon = new ImageIcon(imPath + "/icons/mainIcon.png");
+        setIconImage(icon.getImage());
         setTitle("RepTel.java");
         setSize(800, 1000);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
