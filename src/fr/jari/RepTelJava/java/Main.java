@@ -40,12 +40,20 @@ public class Main{
         }
         f.button.setVisible(false);
         f.clicked = false;
-    } public static boolean testType(String s){
+    }
+    /** Returns a boolean value:
+     *  true -> The String can be converted to a Double
+     *  -> It is only composed of numbers
+     *
+     *  false -> The String cannot be converted to a Double
+     *  -> It is composed of at least 1 String
+     */
+    public static boolean testType(String s){
         try {
             Double.parseDouble(s);
-            return true;
+            return true; // Double
         } catch (NumberFormatException ignored) {
-            return false;
+            return false; // String
         }
     }
 
@@ -367,6 +375,27 @@ public class Main{
                                             break;
 
                                         case "delete":
+                                            found = false;
+                                            filecontentStr = new StringBuilder();
+                                            myWriter = new FileWriter(filename, false);
+                                            for (String content : filecontent){
+                                                if (found){
+                                                    if (!testType(content)){
+                                                        found = false;
+                                                    }
+                                                }
+                                                if (content.equals(search)){
+                                                    found = true;
+                                                }
+                                                if (!found){
+                                                    filecontentStr.append(content).append("\n");
+                                                }
+                                            }
+                                            w.write(filecontentStr.toString(), myWriter);
+                                            displayWrite(f, w);
+                                            myWriter.close();
+                                            f.setConsoleOutput("> That person has been successfully deleted", GREEN);
+                                            Thread.sleep(500);
                                             break;
                                     }
                                 } else{
@@ -427,6 +456,26 @@ public class Main{
 
                     case "5" -> { // Breaks the Menu loop to change file
                         break menuloop;
+                    }
+
+                    case "6" -> {
+                        File myRead = new File(r.getFilename());
+                        Scanner myReader = new Scanner(myRead);
+                        ArrayList<String> fileContent = r.read(myReader);
+                        StringBuilder filecontent = new StringBuilder();
+                        filecontent.append("<html>");
+                        for (String line : fileContent){
+                            if (!testType(line)){
+                                filecontent.append("<br/><br/>").append(line).append(" :");
+                            } else {
+                                filecontent.append("<br/>- ").append(line);
+                            }
+                        }filecontent.append("</html>");
+                        fileGUI fg = new fileGUI(w.getFilename());
+                        fg.setVisible(true);
+                        //fg.textArea.setText(String.valueOf(filecontent));
+                        String all = new Scanner(new File(w.getFilename())).useDelimiter("\\A").next();
+                        fg.textArea.setText(all);
                     }
                 }
                 f.input = null;

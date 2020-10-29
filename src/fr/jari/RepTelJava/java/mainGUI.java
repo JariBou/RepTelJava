@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -77,7 +79,6 @@ public class mainGUI extends JFrame {
     }
 
     public mainGUI(){
-        //label1.setHorizontalTextPosition(JLabel.LEFT);
         button.setVisible(false);
         notesLabel.setVisible(true);
         menuPanel.setVisible(true);
@@ -129,5 +130,45 @@ public class mainGUI extends JFrame {
                 }
             }
         });
+
+        this.addWindowListener(new WindowListener() {
+
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                System.exit(1);
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
+
     }
 }

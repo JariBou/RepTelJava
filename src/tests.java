@@ -1,4 +1,5 @@
 import fr.jari.RepTelJava.java.Read;
+import fr.jari.RepTelJava.java.fileGUI;
 import fr.jari.RepTelJava.java.mainGUI;
 
 import javax.swing.*;
@@ -14,15 +15,13 @@ import java.util.Scanner;
 public class tests {
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException {
-        mainGUI frame = new mainGUI();
-        frame.setVisible(true);
-        ArrayList<String> list = new ArrayList<>();
-        list.add("Y");
-        list.add("N");
-        String box = frame.setChoiceBox(list);
-        switch (box) {
-            case "Y" -> System.out.println("WTF");
-            case "N" -> System.out.println("Nope");
+
+        StringBuilder content = new StringBuilder();
+        content.append("dzdqzdqzd").append("5498489484");
+        fileGUI fg = new fileGUI("file1");
+        fg.setVisible(true);
+        while(true){
+            Thread.sleep(100);
         }
 
 
