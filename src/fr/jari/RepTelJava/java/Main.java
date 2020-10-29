@@ -14,33 +14,33 @@ import java.util.Scanner;
 @SuppressWarnings("BusyWait")
 public class Main{
     // Console output query and display when writing
-    public static void displayWrite(mainGUI frame, Write w) throws InterruptedException {
-        frame.consoleOutput.setForeground(w.color);
-        frame.consoleOutput.setText("> ------------------");
+    public static void displayWrite(mainGUI f, Write w) throws InterruptedException {
+        f.consoleOutput.setForeground(w.color);
+        f.consoleOutput.setText("> ------------------");
         Thread.sleep(500);
-        frame.consoleOutput.setText("> " + w.output);
+        f.consoleOutput.setText("> " + w.output);
         w.output = "";
     }
 
     // Default setup
-    public static void buttonActions(mainGUI frame) throws InterruptedException {
-        buttonActions(frame, null, Color.green);
+    public static void buttonActions(mainGUI f) throws InterruptedException {
+        buttonActions(f, null, Color.green);
     }
 
     // Button interactions
-    public static void buttonActions(mainGUI frame, String text, Color color) throws InterruptedException {
-        frame.consoleOutput.setForeground(color);
+    public static void buttonActions(mainGUI f, String text, Color color) throws InterruptedException {
+        f.consoleOutput.setForeground(color);
         if (text != null){
-            frame.consoleOutput.setText("> " + text);
+            f.consoleOutput.setText("> " + text);
         } else{
-            frame.consoleOutput.setText("> Click on the 'Ok' button to exit to Menu");
+            f.consoleOutput.setText("> Click on the 'Ok' button to exit to Menu");
         }
-        frame.button.setVisible(true);
-        while (!frame.clicked) {
+        f.button.setVisible(true);
+        while (!f.clicked) {
             Thread.sleep(100);
         }
-        frame.button.setVisible(false);
-        frame.clicked = false;
+        f.button.setVisible(false);
+        f.clicked = false;
     } public static boolean testType(String s){
         try {
             Double.parseDouble(s);
@@ -53,8 +53,8 @@ public class Main{
     // Main
     public static void main(String[] args) throws IOException, InterruptedException {
         // GUI init
-        mainGUI frame = new mainGUI();
-        frame.setVisible(true);
+        mainGUI f = new mainGUI();
+        f.setVisible(true);
         // Write and Read init
         Write w = new Write();
         Read r = new Read();
@@ -64,7 +64,7 @@ public class Main{
 
         while(true) {
             boolean hasFiles = false;
-            frame.label2.setText("Current file:  Unknown");
+            f.label2.setText("Current file:  Unknown");
             // Search for files in directory
             StringBuilder files = new StringBuilder();
             File folder = new File(path);
@@ -82,48 +82,48 @@ public class Main{
                 }
             }
             if (!hasFiles) { // New file since no pre-existing file
-                frame.consoleOutput.setForeground(Color.red);
-                frame.consoleOutput.setText("> No existing Files");
-                frame.label1.setText("Enter a filename to be created: ");
-                while (!frame.isPressed()) {
+                f.consoleOutput.setForeground(Color.red);
+                f.consoleOutput.setText("> No existing Files");
+                f.label1.setText("Enter a filename to be created: ");
+                while (!f.isPressed()) {
                     Thread.sleep(100);
-                } if (frame.isPressed()) {
-                    String fileName = frame.input;
+                } if (f.isPressed()) {
+                    String fileName = f.input;
                     w.create(fileName);
-                    displayWrite(frame, w);
+                    displayWrite(f, w);
                     if (w.color == Color.green) {
                         Thread.sleep(100);
-                        frame.setPressed(false);
+                        f.setPressed(false);
                     }
-                }frame.setPressed(false);
+                }f.setPressed(false);
             }
             if (hasFiles){ // Selection of the file
-                frame.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
-                while (!frame.isPressed()) {
+                f.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
+                while (!f.isPressed()) {
                     Thread.sleep(100);
                 }
-                if (frame.isPressed()) {
-                    String file = frame.input;
+                if (f.isPressed()) {
+                    String file = f.input;
                     w.setFilename(file);
                     r.setFilename(file);
                 }
-            } frame.setPressed(false);
+            } f.setPressed(false);
 
             menuloop: // Menu loop, used to change the file
             while (true) {
                 // Menu display
-                frame.label2.setText("Current file:  " + w.getFilename());
-                frame.label1.setText("<html>0 - Quit <br/> 1 - Write <br/> 2 - Read <br/> 3 - Get number of persons <br/> 4 - Create new file <br/> 5 - Switch File </html>");
-                frame.consoleOutput.setText("> ");
-                frame.setPressed(false);
+                f.label2.setText("Current file:  " + w.getFilename());
+                f.label1.setText("<html>0 - Quit <br/> 1 - Write <br/> 2 - Read <br/> 3 - Get number of persons <br/> 4 - Create new file <br/> 5 - Switch File </html>");
+                f.consoleOutput.setText("> ");
+                f.setPressed(false);
                 String choice = "0";
-                while (!frame.isPressed()) {
+                while (!f.isPressed()) {
                     Thread.sleep(100);
-                    if (frame.isPressed()) {
-                        choice = frame.input;
+                    if (f.isPressed()) {
+                        choice = f.input;
                         break;
                     }
-                }frame.setPressed(false);
+                }f.setPressed(false);
                 switchloop: // Switch loop, used to exit the switch loop
                 switch (choice) {
                     case "0" -> System.exit(0); // Quit
@@ -132,22 +132,22 @@ public class Main{
                         File myRead = new File(r.getFilename());
                         while (true) {
                             Scanner myReader = new Scanner(myRead);
-                            frame.label1.setText("Enter a name (0 to quit): ");
-                            while (!frame.isPressed()) {
+                            f.label1.setText("Enter a name (0 to quit): ");
+                            while (!f.isPressed()) {
                                 Thread.sleep(100);
                             }
-                            if (frame.isPressed()) {
-                                String name = frame.input;
+                            if (f.isPressed()) {
+                                String name = f.input;
                                 if (name.equals("0")) {
                                     break;
                                 }
-                                frame.label1.setText("Enter a name: " + name);
+                                f.label1.setText("Enter a name: " + name);
                                 ArrayList<String> filecontent = r.read(myReader);
                                 if (filecontent.contains(name)){
-                                    frame.consoleOutput.setForeground(Color.red);
-                                    frame.consoleOutput.setText("> Name already assigned, add a number to that person? Y/N");
-                                    String add = frame.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")));
-                                    frame.setPressed(false);
+                                    f.consoleOutput.setForeground(Color.red);
+                                    f.consoleOutput.setText("> Name already assigned, add a number to that person? Y/N");
+                                    String add = f.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")));
+                                    f.setPressed(false);
                                     if (add.equals("Y")){
                                         FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
                                         boolean found = false;
@@ -156,19 +156,19 @@ public class Main{
                                             if (found) {
                                                 if (!testType(i)) {
                                                     int pos = filecontent.indexOf(i);
-                                                    frame.consoleOutput.setText("> ");
-                                                    frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
-                                                    while(!frame.isPressed()){
+                                                    f.consoleOutput.setText("> ");
+                                                    f.label1.setText("<html> " + f.label1.getText() + " <br/> Enter a number: </html>");
+                                                    while(!f.isPressed()){
                                                         Thread.sleep(100);
-                                                    } if (frame.isPressed()){
-                                                        String number = frame.input;
+                                                    } if (f.isPressed()){
+                                                        String number = f.input;
                                                         filecontent.add(pos, number);
-                                                    } frame.setPressed(false);
+                                                    } f.setPressed(false);
                                                     StringBuilder filecontentStr = new StringBuilder();
                                                     for (String k : filecontent){
                                                         filecontentStr.append(k).append("\n");
                                                     } w.write(filecontentStr.toString(), myWriter);
-                                                    displayWrite(frame, w);
+                                                    displayWrite(f, w);
                                                     myWriter.close();
                                                     break;
                                                 }
@@ -181,28 +181,26 @@ public class Main{
                                     if (add.equals("N")) {
                                         break;
                                     }
-
-
                                     myReader.close();
-                                    frame.setPressed(false);
+                                    f.setPressed(false);
                                 }
                                 else{
                                     FileWriter myWriter = new FileWriter(filename, true); // if not you good bruv
-                                    frame.setPressed(false);
-                                    frame.label1.setText("<html> " + frame.label1.getText() + " <br/> Enter a number: </html>");
-                                    while (!frame.isPressed()) {
+                                    f.setPressed(false);
+                                    f.label1.setText("<html> " + f.label1.getText() + " <br/> Enter a number: </html>");
+                                    while (!f.isPressed()) {
                                         Thread.sleep(100);
                                     }
-                                    if (frame.isPressed()) {
-                                        String number = frame.input;
+                                    if (f.isPressed()) {
+                                        String number = f.input;
                                         if (number.equals("0")) {
                                             break;
                                         }
-                                        frame.label1.setText(frame.label1.getText() + number);
+                                        f.label1.setText(f.label1.getText() + number);
                                         w.write(name + "\n" + number + "\n", myWriter);
-                                        displayWrite(frame, w);
+                                        displayWrite(f, w);
                                     }
-                                    frame.setPressed(false);
+                                    f.setPressed(false);
                                     myWriter.close();
                                 }
                             }
@@ -210,7 +208,7 @@ public class Main{
                     }
 
                     case "2" -> { // Search in file
-                        frame.label1.setText("Enter the person's name to search for: ");
+                        f.label1.setText("Enter the person's name to search for: ");
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
@@ -218,14 +216,14 @@ public class Main{
                         while (true) {
                             boolean found = false;
                             String search = "";
-                            while (!frame.isPressed()) {
+                            while (!f.isPressed()) {
                                 Thread.sleep(100);
-                                if (frame.isPressed()) {
-                                    search = frame.input;
+                                if (f.isPressed()) {
+                                    search = f.input;
                                     break;
                                 }
                             }
-                            frame.setPressed(false);
+                            f.setPressed(false);
                             int start = fileContent.indexOf(search);
                             for (String i : fileContent.subList(start, fileContent.size())) {
                                 if (found) {
@@ -240,17 +238,17 @@ public class Main{
                                 }
                             }
                             if (!found) {
-                                buttonActions(frame, "Person not found, click 'Ok' to try again", Color.red);
-                                frame.consoleOutput.setForeground(Color.green);
-                                frame.consoleOutput.setText("> Please enter a name");
+                                buttonActions(f, "Person not found, click 'Ok' to try again", Color.red);
+                                f.consoleOutput.setForeground(Color.green);
+                                f.consoleOutput.setText("> Please enter a name");
                             } else {
                                 if (search.endsWith("s")) {
                                     search += "'";
                                 } else {
                                     search += "'s";
-                                } frame.label1.setText("<html>" + search + " numbers are: " + numbers +"<br/" + "Do you want to modify? M/N" + "<br/>" + " <html/>");
-                                buttonActions(frame);
-                                frame.label1.setText("OK");
+                                } f.label1.setText("<html>" + search + " numbers are: " + numbers +"<br/" + "Do you want to modify? M/N" + "<br/>" + " <html/>");
+                                buttonActions(f);
+                                f.label1.setText("OK");
                                 myReader.close();
                                 break switchloop;
                             }
@@ -271,41 +269,36 @@ public class Main{
                                 count++;
                             }
                         }
-                        frame.label1.setText("<html> The number of persons stored is: " + count + " <br/> Do you want to know their names? Y/N </html>");
-                        while (!frame.isPressed()) {
-                            Thread.sleep(100);
-                        }
-                        if (frame.isPressed()) {
-                            String name = frame.input;
-                            if (name.equals("Y")) {
-                                StringBuilder strNames = new StringBuilder();
-                                for (String s : names) {
-                                    strNames.append(" <br/> - ").append(s);
-                                }
-                                frame.label1.setText("<html> Their names are: " + strNames + "<html/>");      // When too much names problem, they all on same line, and they appear as lists
-                                buttonActions(frame);
+                        f.label1.setText("<html> The number of persons stored is: " + count + " <br/> Do you want to know their names? Y/N </html>");
+                        String name = f.setChoiceBox(new ArrayList<>( Arrays.asList("Y", "N")));
+                        if (name.equals("Y")) {
+                            StringBuilder strNames = new StringBuilder();
+                            for (String s : names) {
+                                strNames.append(" <br/> - ").append(s);
                             }
+                            f.label1.setText("<html> Their names are: " + strNames + "<html/>");      // When too much names problem, they all on same line, and they appear as lists
+                            buttonActions(f);
                         }
-                        frame.setPressed(false);
+                        f.setPressed(false);
                     }
 
                     case "4" -> { // Create a new file
                         while (true) {
-                            frame.label1.setText("Enter the filename: ");
-                            while (!frame.isPressed()) {
+                            f.label1.setText("Enter the filename: ");
+                            while (!f.isPressed()) {
                                 Thread.sleep(100);
                             }
-                            if (frame.isPressed()) {
-                                String fileName = frame.input;
+                            if (f.isPressed()) {
+                                String fileName = f.input;
                                 w.create(fileName);
-                                displayWrite(frame, w);
+                                displayWrite(f, w);
                                 if (w.color == Color.green) {
                                     Thread.sleep(100);
-                                    frame.setPressed(false);
+                                    f.setPressed(false);
                                     break;
                                 }
                             }
-                            frame.setPressed(false);
+                            f.setPressed(false);
                         }
                     }
 
@@ -313,7 +306,7 @@ public class Main{
                         break menuloop;
                     }
                 }
-                frame.input = null;
+                f.input = null;
             }
         }
     }
