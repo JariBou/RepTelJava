@@ -145,8 +145,7 @@ public class Main{
                                 ArrayList<String> filecontent = r.read(myReader);
                                 if (filecontent.contains(name)){
                                     f.consoleOutput.setForeground(Color.red);
-                                    f.consoleOutput.setText("> Name already assigned, add a number to that person? Y/N");
-                                    String add = f.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")));
+                                    String add = f.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")), "> Name already assigned, add a number to that person? Y/N", Color.red);
                                     f.setPressed(false);
                                     if (add.equals("Y")){
                                         FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
@@ -213,7 +212,6 @@ public class Main{
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
                         StringBuilder numbers = new StringBuilder();
-                        ArrayList<String> numbersList = new ArrayList<>();
                         while (true) {
                             boolean found = false;
                             String searchE;
@@ -229,11 +227,10 @@ public class Main{
                             int start = fileContent.indexOf(search);
                             int count = 0;
                             for (String i : fileContent.subList(start, fileContent.size())) {
-                                count ++;
                                 if (found) {
                                     if (testType(i)) {
+                                        count ++;
                                         numbers.append(" <br/>").append(count).append("- ").append(i);
-                                        numbersList.add(i);
                                     } else {
                                         break;
                                     }
@@ -265,12 +262,19 @@ public class Main{
                                     ArrayList<String> filecontent = r.read(myReader);
                                     switch (choice){
                                         case "modify":
-                                            // print the numbers with an associated number
-                                            // chosen number to real number
-                                            String newNumber = ""; // new number
-                                            String oldNumber = ""; // old number
-                                            filecontent.set(filecontent.indexOf(oldNumber), newNumber);
+                                            f.label1.setText("<html>" + searchE + " numbers are: " + numbers +"<html/>"); // print the numbers with an associated number
+                                            int hardCount = 1;
+                                            ArrayList<String> countNumb = new ArrayList<>();
+                                            while(hardCount <= count){
+                                                countNumb.add(Integer.toString(hardCount));
+                                                hardCount ++;
+                                            }
+                                            int posN = Integer.parseInt(f.setChoiceBox(countNumb));
+                                            String oldNumber = fileContent.get(posN-1); // old number
+                                            String newNumber = "6666666666666666666"; // new number
 
+                                            filecontent.set(filecontent.indexOf(oldNumber), newNumber);
+                                            break;
 
                                         case "add":
                                             found = false;
@@ -300,6 +304,7 @@ public class Main{
                                                     found = true;
                                                 }
                                             }
+                                            break;
 
                                         case "remove":
                                             break;

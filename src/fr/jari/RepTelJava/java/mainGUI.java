@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class mainGUI extends JFrame {
     private JTextField textField1; // Input
@@ -40,12 +41,16 @@ public class mainGUI extends JFrame {
     }
 
     public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
+        return setChoiceBox(list, null, Color.green);
+    }
+
+    public String setChoiceBox(ArrayList<String> list, String message, Color color) throws InterruptedException {
         choiceBox.setVisible(true);
         for (String s : list){
             choiceBox.addItem(s);
         }
-        consoleOutput.setForeground(Color.green);
-        consoleOutput.setText("> Select your choice, then click the 'ok' button");
+        consoleOutput.setForeground(color);
+        consoleOutput.setText(Objects.requireNonNullElse(message, "> Select your choice, then click the 'ok' button"));
         button.setVisible(true);
         while (!clicked) {
             //noinspection BusyWait
@@ -53,8 +58,8 @@ public class mainGUI extends JFrame {
         } clicked = false;
         int choice = choiceBox.getSelectedIndex();
         choiceBox.setVisible(false);
-        choiceBox.removeAllItems();
         button.setVisible(false);
+        choiceBox.removeAllItems();
         return list.get(choice);
 
     }
