@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class mainGUI extends JFrame implements ActionListener {
+public class mainGUI extends JFrame{
     private JTextField textField1; // Input
     public JLabel label1; // Main Display
     private JPanel rootPanel;
@@ -25,16 +25,19 @@ public class mainGUI extends JFrame implements ActionListener {
     public JButton exportNotes;
     private JComboBox<String> choiceBox;
     public JLabel fontSizeLabel;
+    private JLabel consoleLabel;
     public String input; // Value of the Input Display
     public boolean pressed;
     public boolean clicked;
-    public String language;
-
+    Color GREY = Color.darkGray;
+    Color GOLD = Color.orange;
+    Color WHITE = Color.white;
+    Color BLACK = Color.black;
 
     JMenuBar menuBar;
     JMenu settings;
-    JMenu lang;
-    JMenuItem french, english;
+    JMenu theme;
+    JMenuItem dark, light;
 
 
 
@@ -85,23 +88,18 @@ public class mainGUI extends JFrame implements ActionListener {
         return list.get(choice);
     }
 
-    public String getLanguage(){
-        return language;
-    }
 
     public mainGUI(){
-        language = "en";
         menuBar = new JMenuBar();
         settings = new JMenu("Settings");
         menuBar.add(settings);
-        lang = new JMenu("Language");
-        settings.add(lang);
-        french = new JMenuItem("Français");
-        english = new JMenuItem("English");
-        lang.add(french);
-        lang.add(english);
-
-
+        theme = new JMenu("Theme");
+        settings.add(theme);
+        dark = new JMenuItem("Dark");
+        light = new JMenuItem("Light");
+        theme.add(dark);
+        theme.add(light);
+        notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
         button.setVisible(false);
         notesLabel.setVisible(true);
         menuPanel.setVisible(true);
@@ -159,6 +157,37 @@ public class mainGUI extends JFrame implements ActionListener {
             }
         });
 
+        dark.addActionListener(e ->{
+            rootPanel.setBackground(GREY);
+            menuPanel.setBackground(GREY);
+            notes.setBackground(GREY);
+            notes.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.lightGray));
+            notesLabel.setForeground(GOLD);
+            textField1.setBackground(GREY);
+            label1.setForeground(GOLD);
+            label2.setForeground(GOLD);
+            consoleLabel.setForeground(GOLD);
+            textField1.setForeground(GOLD);
+            sliderSize.setBackground(GREY);
+            fontSizeLabel.setForeground(GOLD);
+            sliderSize.setForeground(GOLD);
+        }  );
+        light.addActionListener(e -> {
+            rootPanel.setBackground(WHITE);
+            menuPanel.setBackground(WHITE);
+            notes.setBackground(WHITE);
+            notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
+            notesLabel.setForeground(BLACK);
+            textField1.setBackground(WHITE);
+            label1.setForeground(BLACK);
+            label2.setForeground(BLACK);
+            consoleLabel.setForeground(BLACK);
+            textField1.setForeground(BLACK);
+            sliderSize.setBackground(WHITE);
+            fontSizeLabel.setForeground(BLACK);
+            sliderSize.setForeground(BLACK);
+        });
+
         this.addWindowListener(new WindowListener() {
 
 
@@ -197,16 +226,6 @@ public class mainGUI extends JFrame implements ActionListener {
 
             }
         });
-
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        if (e.getSource() == french) language = "fr";
-
-        if (e.getSource() == english) language = "en";
-
 
     }
 }
