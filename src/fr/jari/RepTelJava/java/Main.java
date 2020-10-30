@@ -56,6 +56,12 @@ public class Main{
             return false; // String
         }
     }
+    public static String capitalize(String str)
+    {
+        if(str == null) return null;
+        str = str.toLowerCase();
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
 
     // Main
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -176,7 +182,7 @@ public class Main{
                                 Thread.sleep(100);
                             }
                             if (f.isPressed()) {
-                                String name = f.input;
+                                String name = capitalize(f.input);
                                 if (name.equals("0")) {
                                     break;
                                 }
@@ -257,7 +263,7 @@ public class Main{
                             while (!f.isPressed()) {
                                 Thread.sleep(100);
                                 if (f.isPressed()) {
-                                    search = f.input;
+                                    search = capitalize(f.input);
                                     break;
                                 }
                             }
@@ -464,18 +470,22 @@ public class Main{
                         ArrayList<String> fileContent = r.read(myReader);
                         StringBuilder filecontent = new StringBuilder();
                         filecontent.append("<html>");
+                        int first = 1;
                         for (String line : fileContent){
-                            if (!testType(line)){
+                            if (!testType(line) && first == 0){
                                 filecontent.append("<br/><br/>").append(line).append(" :");
-                            } else {
+                            } if (first == 1){
+                                filecontent.append("List of Names:<br/><br/>").append(line).append(" :");
+                                first = 0;
+                            } if (testType(line)){
                                 filecontent.append("<br/>- ").append(line);
                             }
                         }filecontent.append("</html>");
                         fileGUI fg = new fileGUI(w.getFilename());
                         fg.setVisible(true);
-                        //fg.textArea.setText(String.valueOf(filecontent));
-                        String all = new Scanner(new File(w.getFilename())).useDelimiter("\\A").next();
-                        fg.textArea.setText(all);
+                        fg.display.setText(String.valueOf(filecontent));
+                        //String all = new Scanner(new File(w.getFilename())).useDelimiter("\\A").next();
+                        //fg.display.setText(all);
                     }
                 }
                 f.input = null;
