@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;  // Import the IOException class to handle errors
 import java.nio.file.Path;
 
-public class Write{
+public class WriteEng {
     private String filename;
     public String output;
     public Color color;

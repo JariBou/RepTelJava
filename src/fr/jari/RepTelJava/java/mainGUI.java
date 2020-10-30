@@ -2,10 +2,7 @@ package fr.jari.RepTelJava.java;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class mainGUI extends JFrame {
+public class mainGUI extends JFrame implements ActionListener {
     private JTextField textField1; // Input
     public JLabel label1; // Main Display
     private JPanel rootPanel;
@@ -25,14 +22,24 @@ public class mainGUI extends JFrame {
     private JSlider sliderSize; // Slider that changes font size
     public JLabel consoleOutput; // Console Display
     public JButton button; // Button
-    private JButton exportNotes;
+    public JButton exportNotes;
     private JComboBox<String> choiceBox;
+    public JLabel fontSizeLabel;
     public String input; // Value of the Input Display
     public boolean pressed;
     public boolean clicked;
+    public String language;
 
 
-    Write w = new Write();
+    JMenuBar menuBar;
+    JMenu settings;
+    JMenu lang;
+    JMenuItem french, english;
+
+
+
+
+    WriteEng w = new WriteEng();
 
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
     public Font setFontSize(int size){ // Changes the font size, used for button
@@ -78,7 +85,23 @@ public class mainGUI extends JFrame {
         return list.get(choice);
     }
 
+    public String getLanguage(){
+        return language;
+    }
+
     public mainGUI(){
+        language = "en";
+        menuBar = new JMenuBar();
+        settings = new JMenu("Settings");
+        menuBar.add(settings);
+        lang = new JMenu("Language");
+        settings.add(lang);
+        french = new JMenuItem("Français");
+        english = new JMenuItem("English");
+        lang.add(french);
+        lang.add(english);
+
+
         button.setVisible(false);
         notesLabel.setVisible(true);
         menuPanel.setVisible(true);
@@ -86,6 +109,7 @@ public class mainGUI extends JFrame {
         label1.setFont(defaultFont);
         consoleOutput.setBackground(Color.black);
         add(rootPanel);
+        setJMenuBar(menuBar);
         Path currentRelativePath = Paths.get("");
         String imPath = currentRelativePath.toAbsolutePath().toString();
         ImageIcon icon = new ImageIcon(imPath + "/icons/mainIcon.png");
@@ -173,6 +197,16 @@ public class mainGUI extends JFrame {
 
             }
         });
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == french) language = "fr";
+
+        if (e.getSource() == english) language = "en";
+
 
     }
 }

@@ -12,9 +12,9 @@ import java.util.Scanner;
 
 
 @SuppressWarnings("BusyWait")
-public class Main{
+public class MainEng {
     // Console output query and display when writing
-    public static void displayWrite(mainGUI f, Write w) throws InterruptedException {
+    public static void displayWrite(mainGUI f, WriteEng w) throws InterruptedException {
         f.setConsoleOutput("> ------------------", w.color);
         Thread.sleep(500);
         f.consoleOutput.setText("> " + w.output);
@@ -71,7 +71,7 @@ public class Main{
         mainGUI f = new mainGUI();
         f.setVisible(true);
         // Write and Read init
-        Write w = new Write();
+        WriteEng w = new WriteEng();
         Read r = new Read();
         // Path query
         Path currentRelativePath = Paths.get("");

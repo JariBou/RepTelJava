@@ -1,5 +1,6 @@
 import fr.jari.RepTelJava.java.Read;
 import fr.jari.RepTelJava.java.fileGUI;
+import fr.jari.RepTelJava.java.startGui;
 import fr.jari.RepTelJava.java.mainGUI;
 
 import javax.swing.*;
@@ -16,9 +17,7 @@ public class tests {
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 
-        StringBuilder content = new StringBuilder();
-        content.append("dzdqzdqzd").append("5498489484");
-        fileGUI fg = new fileGUI("file1");
+        startGui fg = new startGui();
         fg.setVisible(true);
         while(true){
             Thread.sleep(100);
