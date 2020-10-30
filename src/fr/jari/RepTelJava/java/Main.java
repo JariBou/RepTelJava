@@ -256,6 +256,7 @@ public class Main{
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
                         StringBuilder numbers = new StringBuilder();
+                        ArrayList<String> numbersList = new ArrayList<>();
                         while (true) {
                             boolean found = false;
                             String searchE;
@@ -275,6 +276,7 @@ public class Main{
                                     if (testType(i)) {
                                         count ++;
                                         numbers.append(" <br/>").append(count).append("- ").append(i);
+                                        numbersList.add(i);
                                     } else {
                                         break;
                                     }
@@ -333,6 +335,9 @@ public class Main{
                                             found = false;
                                             start = filecontent.indexOf(search);
                                             for (String line : filecontent.subList(start, filecontent.size())) {
+                                                System.out.println("line: "+ line);
+                                                System.out.println("search: "+ search);
+                                                System.out.println(found);
                                                 if (found) {
                                                     if (!testType(line)) {
                                                         myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
@@ -356,6 +361,22 @@ public class Main{
                                                 if (search.equals(line)) {
                                                     found = true;
                                                 }
+                                            } if (found){
+                                            myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                            int pos = filecontent.size();
+                                            f.label1.setText("Enter the number you wish to add");
+                                            while(!f.isPressed()){
+                                                Thread.sleep(100);
+                                            } if (f.isPressed()){
+                                                String number = f.input;
+                                                filecontent.add(pos, number);
+                                            } f.setPressed(false);
+                                            filecontentStr = new StringBuilder();
+                                            for (String k : filecontent){
+                                                filecontentStr.append(k).append("\n");
+                                            } w.write(filecontentStr.toString(), myWriter);
+                                            displayWrite(f, w);
+                                            myWriter.close();
                                             }
                                             break;
 
@@ -368,7 +389,7 @@ public class Main{
                                                 hardCountR ++;
                                             }
                                             int posNR = Integer.parseInt(f.setChoiceBox(countNumbR));
-                                            filecontent.remove(posNR);
+                                            filecontent.remove(numbersList.get(posNR-1));
                                             f.setConsoleOutput("> Number removed", GREEN);
                                             Thread.sleep(500);
                                             myWriter = new FileWriter(filename, false);
@@ -405,9 +426,11 @@ public class Main{
                                             break;
                                     }
                                 } else{
+                                    System.out.println("not in switch");
                                     myReader.close();
                                     break switchloop;
                                 }
+                                System.out.println("somewhere");
                                 break switchloop;
                             }myReader.close();
                         }
