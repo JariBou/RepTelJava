@@ -1,6 +1,7 @@
 package fr.jari.RepTelJava.java;
 
 import javax.swing.*;
+import static javax.swing.JOptionPane.showMessageDialog;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -37,7 +38,7 @@ public class mainGUI extends JFrame{
     JMenuBar menuBar;
     JMenu settings;
     JMenu theme;
-    JMenuItem dark, light;
+    JMenuItem dark, light, about;
 
 
 
@@ -95,6 +96,8 @@ public class mainGUI extends JFrame{
         menuBar.add(settings);
         theme = new JMenu("Theme");
         settings.add(theme);
+        about = new JMenuItem("about");
+        settings.add(about);
         dark = new JMenuItem("Dark");
         light = new JMenuItem("Light");
         theme.add(dark);
@@ -186,6 +189,9 @@ public class mainGUI extends JFrame{
             sliderSize.setBackground(WHITE);
             fontSizeLabel.setForeground(BLACK);
             sliderSize.setForeground(BLACK);
+        });
+        about.addActionListener(e -> {
+            showMessageDialog(null, "<html>Credits: <br/> Made by JariBou<br/><br/> Version: Beta 0.5.6</html>");
         });
 
         this.addWindowListener(new WindowListener() {
