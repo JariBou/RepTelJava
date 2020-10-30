@@ -335,9 +335,6 @@ public class Main{
                                             found = false;
                                             start = filecontent.indexOf(search);
                                             for (String line : filecontent.subList(start, filecontent.size())) {
-                                                System.out.println("line: "+ line);
-                                                System.out.println("search: "+ search);
-                                                System.out.println(found);
                                                 if (found) {
                                                     if (!testType(line)) {
                                                         myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
@@ -426,11 +423,9 @@ public class Main{
                                             break;
                                     }
                                 } else{
-                                    System.out.println("not in switch");
                                     myReader.close();
                                     break switchloop;
                                 }
-                                System.out.println("somewhere");
                                 break switchloop;
                             }myReader.close();
                         }
