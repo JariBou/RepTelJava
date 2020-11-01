@@ -103,6 +103,7 @@ public class mainGUI extends JFrame{
         theme.add(dark);
         theme.add(light);
         notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
+        menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, Color.lightGray));
         button.setVisible(false);
         notesLabel.setVisible(true);
         menuPanel.setVisible(true);
@@ -164,6 +165,7 @@ public class mainGUI extends JFrame{
             rootPanel.setBackground(GREY);
             menuPanel.setBackground(GREY);
             notes.setBackground(GREY);
+            menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, Color.lightGray));
             notes.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.lightGray));
             notesLabel.setForeground(GOLD);
             textField1.setBackground(GREY);
@@ -179,6 +181,7 @@ public class mainGUI extends JFrame{
             rootPanel.setBackground(WHITE);
             menuPanel.setBackground(WHITE);
             notes.setBackground(WHITE);
+            menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
             notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
             notesLabel.setForeground(BLACK);
             textField1.setBackground(WHITE);
@@ -191,7 +194,15 @@ public class mainGUI extends JFrame{
             sliderSize.setForeground(BLACK);
         });
         about.addActionListener(e -> {
-            showMessageDialog(null, "<html>Credits: <br/> Made by JariBou<br/><br/> Version: Beta 0.5.6</html>");
+
+            JOptionPane optionPane = new JOptionPane("<html>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.6</html>",
+                    JOptionPane.INFORMATION_MESSAGE);
+            JDialog dialog = optionPane.createDialog("About");
+            dialog.setIconImage(icon.getImage());
+            dialog.setAlwaysOnTop(true); // to show top of all other application
+            dialog.setVisible(true); // to visible the dialog
+
+            //showMessageDialog(null, "<html><div style='text-align: center;'>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.6</div></html>");
         });
 
         this.addWindowListener(new WindowListener() {
