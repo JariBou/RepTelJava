@@ -251,7 +251,7 @@ public class MainEng {
                     }
 
                     case "2" -> { // Search in file
-                        f.label1.setText("Enter the person's name to search for: ");
+                        f.label1.setText("Enter the person's name to search for: "); // add smth to chnge the text displayed when there is only 1 number
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
@@ -321,7 +321,8 @@ public class MainEng {
                                                 Thread.sleep(100);
                                             }
                                             String newNumber = f.input;
-                                            filecontent.set(filecontent.indexOf(oldNumber), newNumber);
+                                            //filecontent.set(filecontent.indexOf(oldNumber), newNumber);
+                                            filecontent.set(filecontent.indexOf(numbersList.get(posN-1)), newNumber); // problem if there are 2 numbers that are the same
                                             FileWriter myWriter = new FileWriter(filename, false);
                                             StringBuilder filecontentStr = new StringBuilder();
                                             for (String a : filecontent){
@@ -386,7 +387,7 @@ public class MainEng {
                                                 hardCountR ++;
                                             }
                                             int posNR = Integer.parseInt(f.setChoiceBox(countNumbR));
-                                            filecontent.remove(numbersList.get(posNR-1));
+                                            filecontent.remove(numbersList.get(posNR-1)); // problem if there are 2 numbers that are the same
                                             f.setConsoleOutput("> Number removed", GREEN);
                                             Thread.sleep(500);
                                             myWriter = new FileWriter(filename, false);

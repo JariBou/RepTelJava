@@ -176,6 +176,7 @@ public class mainGUI extends JFrame{
             sliderSize.setBackground(GREY);
             fontSizeLabel.setForeground(GOLD);
             sliderSize.setForeground(GOLD);
+            notes.setForeground(GOLD);
         }  );
         light.addActionListener(e -> {
             rootPanel.setBackground(WHITE);
@@ -192,6 +193,7 @@ public class mainGUI extends JFrame{
             sliderSize.setBackground(WHITE);
             fontSizeLabel.setForeground(BLACK);
             sliderSize.setForeground(BLACK);
+            notes.setForeground(BLACK);
         });
         about.addActionListener(e -> {
 
