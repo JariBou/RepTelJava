@@ -1,7 +1,6 @@
 package fr.jari.RepTelJava.java;
 
 import javax.swing.*;
-import static javax.swing.JOptionPane.showMessageDialog;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -117,7 +116,8 @@ public class mainGUI extends JFrame{
         ImageIcon icon = new ImageIcon(imPath + "/icons/mainIcon.png");
         setIconImage(icon.getImage());
         setTitle("RepTel.java");
-        setSize(800, 1000);
+        setSize(800, 700);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         textField1.addKeyListener(new KeyAdapter() {
             @Override

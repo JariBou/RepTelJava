@@ -254,7 +254,7 @@ public class MainFr {
                     }
 
                     case "2" -> { // Search in file
-                        f.label1.setText("Enter the person's name to search for: ");
+                        f.label1.setText("Entrez le nom de la personne à rechercher: ");
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
@@ -289,7 +289,7 @@ public class MainFr {
                                 }
                             }
                             if (!found) {
-                                buttonActions(f, "Person not found, click 'Ok' to try again", RED);
+                                buttonActions(f, "Personne non trouvée, 'Ok' pour réessayer", RED);
                                 f.setConsoleOutput("> Please enter a name", GREEN);
                             } else {
                                 if (search.endsWith("s")) {
