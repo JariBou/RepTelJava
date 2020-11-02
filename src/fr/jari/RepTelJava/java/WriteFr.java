@@ -31,18 +31,18 @@ public class WriteFr {
             }
             if (myObj.createNewFile()) {
                 this.color = Color.green;
-                this.output = "File created: " + myObj.getName();
+                this.output = "Fichier créé: " + myObj.getName();
                 System.out.println("File created: " + myObj.getName());
             } else {
                 this.color = Color.red;
-                this.output = "File " + myObj.getName() + " already exists";
+                this.output = "Le fichier " + myObj.getName() + " existe déjà";
                 System.out.println("File already exists.");
             }
         }
         catch (IOException e) {
             System.out.println("An error occurred.");
             this.color = Color.red;
-            this.output = "An error occurred";
+            this.output = "Erreur";
             e.printStackTrace();
         } if (path!=null) {
             this.filename = filename + ".txt";
@@ -54,11 +54,11 @@ public class WriteFr {
             myWriter.write(content);
             System.out.println("Successfully wrote to the file.");
             this.color = Color.green;
-            this.output = "Successfully wrote to the file.";
+            this.output = "Ajouté avec succès au fichier";
         } catch (IOException e) {
             System.out.println("An error occurred.");
             this.color = Color.red;
-            this.output = "An error occurred";
+            this.output = "Erreur";
             e.printStackTrace();
         }
     }
