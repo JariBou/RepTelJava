@@ -11,15 +11,31 @@ public class WriteEng {
     public String output;
     public Color color;
 
+    /**
+     * @param filename filename
+     * @implNote Sets the file that will be used
+     */
     public void setFilename(String filename){ // Sets the filename
         this.filename = filename + ".txt";
-    } public String getFilename(){ // Returns the filename
+    }
+
+    /**
+     * @return Filename
+     * @implNote Returns the filename of the current used file
+     */
+    public String getFilename(){ // Returns the filename
         return this.filename;
     }
 
+    // Default set
     public void create(String filename) {
         create(filename, null);
     }
+
+    /**
+     * @param filename The name of the file to be created
+     * @param path The path of the file to be created, if none the the file is created in the current .jar directory
+     */
     public void create(String filename, Path path) { // Creates a new file, handles pre-existing files
         try {
             File myObj;
@@ -49,6 +65,12 @@ public class WriteEng {
         }
     }
 
+    /**
+     * Function to write in a file
+     *
+     * @param content Content to be written
+     * @param myWriter FileWriter instance
+     */
     public void write(String content, FileWriter myWriter) { // Writes inside the file
         try {
             myWriter.write(content);

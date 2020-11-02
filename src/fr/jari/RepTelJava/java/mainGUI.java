@@ -40,8 +40,6 @@ public class mainGUI extends JFrame{
     JMenuItem dark, light, about;
 
 
-
-
     WriteEng w = new WriteEng();
 
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
@@ -50,10 +48,12 @@ public class mainGUI extends JFrame{
     }
     public boolean isPressed() { // Returns a boolean of the state of the enter key
         return pressed;
-    } public void setPressed(boolean state){ // Sets the boolean state of the enter key
+    }
+    public void setPressed(boolean state){ // Sets the boolean state of the enter key
         this.pressed = state;
     }
 
+    // Default set
     public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
         return setChoiceBox(list, null, Color.green, true);
     } public String setChoiceBox(ArrayList<String> list, boolean display) throws InterruptedException {
@@ -62,11 +62,46 @@ public class mainGUI extends JFrame{
         return setChoiceBox(list, message, color, true);
     }
 
+    // Sets the text to display in the console
     public void setConsoleOutput(String text, Color color){
         consoleOutput.setForeground(color);
         consoleOutput.setText(text);
     }
 
+    /**
+     * Sets the theme
+     *
+     * @param textColor Color of the text
+     * @param bgColor Color of the background
+     * @param borderColor Color of the borders
+     */
+    public void setTheme(Color textColor, Color bgColor, Color borderColor) {
+        rootPanel.setBackground(bgColor);
+        menuPanel.setBackground(bgColor);
+        menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, borderColor));
+        notes.setBackground(bgColor);
+        notes.setForeground(textColor);
+        notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, borderColor));
+        notesLabel.setForeground(textColor);
+        textField1.setBackground(bgColor);
+        textField1.setForeground(textColor);
+        label1.setForeground(textColor);
+        label2.setForeground(textColor);
+        consoleLabel.setForeground(textColor);
+        sliderSize.setBackground(bgColor);
+        sliderSize.setForeground(textColor);
+        fontSizeLabel.setForeground(textColor);
+    }
+
+    /**
+     *
+     * @param list List of the elements to be added to the box
+     * @param message Sets a custom message to output to console
+     * @param color Color of the console
+     * @param display Displays whether or not a message will be displayed
+     * @return The String value of the chosen element
+     * @throws InterruptedException Consequence of the Thread.sleep
+     */
     public String setChoiceBox(ArrayList<String> list, String message, Color color, boolean display) throws InterruptedException {
         choiceBox.setVisible(true);
         for (String s : list){
@@ -88,8 +123,9 @@ public class mainGUI extends JFrame{
         return list.get(choice);
     }
 
-
+    // Initializer
     public mainGUI(){
+        // Menu bar
         menuBar = new JMenuBar();
         settings = new JMenu("Settings");
         menuBar.add(settings);
@@ -101,24 +137,29 @@ public class mainGUI extends JFrame{
         light = new JMenuItem("Light");
         theme.add(dark);
         theme.add(light);
-        notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
-        menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, Color.lightGray));
+        setJMenuBar(menuBar);
+
+        // Default theme, and Visual Init
+        setTheme(BLACK, WHITE, GREY);
+        label1.setFont(defaultFont);
+        consoleOutput.setBackground(Color.black);
         button.setVisible(false);
         notesLabel.setVisible(true);
         menuPanel.setVisible(true);
         choiceBox.setVisible(false);
-        label1.setFont(defaultFont);
-        consoleOutput.setBackground(Color.black);
-        add(rootPanel);
-        setJMenuBar(menuBar);
+        //Icon set
         Path currentRelativePath = Paths.get("");
         String imPath = currentRelativePath.toAbsolutePath().toString();
         ImageIcon icon = new ImageIcon(imPath + "/icons/mainIcon.png");
         setIconImage(icon.getImage());
+
+        // Gui Init
+        add(rootPanel);
         setTitle("RepTel.java");
         setSize(800, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         textField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) { // Detects if a key is pressed
@@ -126,9 +167,6 @@ public class mainGUI extends JFrame{
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){ // Detects if the key pressed is Enter
                     setPressed(true);
                     input = textField1.getText();
-                    if (input.equals("close")){
-                        System.exit(1);
-                    }
                     textField1.setText("");
                 }
             }
@@ -136,8 +174,7 @@ public class mainGUI extends JFrame{
             JSlider source = (JSlider)e.getSource();
             if (!source.getValueIsAdjusting()) {
                 int size = source.getValue();
-                label1.setFont(setFontSize(size)); // sets the font size according to the value of the slider
-
+                label1.setFont(setFontSize(size)); // Sets the font size according to the value of the slider
             }
         }); button.addActionListener(e -> clicked = true); // Button clicked detection
         exportNotes.addActionListener(e -> { // Exports notes to .txt File
@@ -161,90 +198,42 @@ public class mainGUI extends JFrame{
             }
         });
 
-        dark.addActionListener(e ->{
-            rootPanel.setBackground(GREY);
-            menuPanel.setBackground(GREY);
-            notes.setBackground(GREY);
-            menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, Color.lightGray));
-            notes.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.lightGray));
-            notesLabel.setForeground(GOLD);
-            textField1.setBackground(GREY);
-            label1.setForeground(GOLD);
-            label2.setForeground(GOLD);
-            consoleLabel.setForeground(GOLD);
-            textField1.setForeground(GOLD);
-            sliderSize.setBackground(GREY);
-            fontSizeLabel.setForeground(GOLD);
-            sliderSize.setForeground(GOLD);
-            notes.setForeground(GOLD);
-        }  );
-        light.addActionListener(e -> {
-            rootPanel.setBackground(WHITE);
-            menuPanel.setBackground(WHITE);
-            notes.setBackground(WHITE);
-            menuPanel.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
-            notes.setBorder(BorderFactory.createMatteBorder(1, 2, 1, 1, GREY));
-            notesLabel.setForeground(BLACK);
-            textField1.setBackground(WHITE);
-            label1.setForeground(BLACK);
-            label2.setForeground(BLACK);
-            consoleLabel.setForeground(BLACK);
-            textField1.setForeground(BLACK);
-            sliderSize.setBackground(WHITE);
-            fontSizeLabel.setForeground(BLACK);
-            sliderSize.setForeground(BLACK);
-            notes.setForeground(BLACK);
-        });
+        // Actions listeners of the toolBar elements
+        dark.addActionListener(e -> setTheme(GOLD, GREY, Color.lightGray));
+        light.addActionListener(e -> setTheme(BLACK, WHITE, GREY));
         about.addActionListener(e -> {
-
             JOptionPane optionPane = new JOptionPane("<html>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.6</html>",
                     JOptionPane.INFORMATION_MESSAGE);
             JDialog dialog = optionPane.createDialog("About");
             dialog.setIconImage(icon.getImage());
             dialog.setAlwaysOnTop(true); // to show top of all other application
             dialog.setVisible(true); // to visible the dialog
-
-            //showMessageDialog(null, "<html><div style='text-align: center;'>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.6</div></html>");
         });
 
+        // Window listener to detect if the window is closed, and if so runs System.exit(1)
         this.addWindowListener(new WindowListener() {
-
-
             @Override
             public void windowOpened(WindowEvent e) {
-
             }
-
             @Override
             public void windowClosing(WindowEvent e) {
-
             }
-
             @Override
             public void windowClosed(WindowEvent e) {
                 System.exit(1);
             }
-
             @Override
             public void windowIconified(WindowEvent e) {
-
             }
-
             @Override
             public void windowDeiconified(WindowEvent e) {
-
             }
-
             @Override
             public void windowActivated(WindowEvent e) {
-
             }
-
             @Override
             public void windowDeactivated(WindowEvent e) {
-
             }
         });
-
     }
 }
