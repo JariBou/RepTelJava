@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
-public class fileGUI extends JFrame{
+public class fileGUI extends JFrame {
     private JPanel mainPanel;
     private JSlider sliderSize;
     private JLabel sizeLabel;
@@ -14,11 +14,12 @@ public class fileGUI extends JFrame{
     private JScrollPane scroll;
 
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
-    public Font setFontSize(int size){ // Changes the font size, used for button
+
+    public Font setFontSize(int size) { // Changes the font size, used for button
         return new Font("Arial", Font.PLAIN, size);
     }
 
-    public fileGUI(String filename){
+    public fileGUI(String filename) {
         display.setFont(defaultFont);
         display.setVisible(true);
         sizeLabel.setVisible(true);
@@ -37,9 +38,8 @@ public class fileGUI extends JFrame{
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 
-
         sliderSize.addChangeListener(e -> { // Detects if the slider state changed
-            JSlider source = (JSlider)e.getSource();
+            JSlider source = (JSlider) e.getSource();
             if (!source.getValueIsAdjusting()) {
                 int size = source.getValue();
                 display.setFont(setFontSize(size)); // sets the font size according to the value of the slider
@@ -48,6 +48,6 @@ public class fileGUI extends JFrame{
         });
 
 
-
     }
+
 }

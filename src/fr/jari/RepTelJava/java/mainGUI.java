@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class mainGUI extends JFrame{
+public class mainGUI extends JFrame {
     private JTextField textField1; // Input
     public JLabel label1; // Main Display
     private JPanel rootPanel;
@@ -43,27 +43,34 @@ public class mainGUI extends JFrame{
     WriteEng w = new WriteEng();
 
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
-    public Font setFontSize(int size){ // Changes the font size, used for button
+
+    public Font setFontSize(int size) { // Changes the font size, used for button
         return new Font("Arial", Font.PLAIN, size);
     }
+
     public boolean isPressed() { // Returns a boolean of the state of the enter key
         return pressed;
     }
-    public void setPressed(boolean state){ // Sets the boolean state of the enter key
+
+    public void setPressed(boolean state) { // Sets the boolean state of the enter key
         this.pressed = state;
     }
 
     // Default set
     public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
         return setChoiceBox(list, null, Color.green, true);
-    } public String setChoiceBox(ArrayList<String> list, boolean display) throws InterruptedException {
+    }
+
+    public String setChoiceBox(ArrayList<String> list, boolean display) throws InterruptedException {
         return setChoiceBox(list, null, Color.green, display);
-    } public String setChoiceBox(ArrayList<String> list, String message, Color color) throws InterruptedException {
+    }
+
+    public String setChoiceBox(ArrayList<String> list, String message, Color color) throws InterruptedException {
         return setChoiceBox(list, message, color, true);
     }
 
     // Sets the text to display in the console
-    public void setConsoleOutput(String text, Color color){
+    public void setConsoleOutput(String text, Color color) {
         consoleOutput.setForeground(color);
         consoleOutput.setText(text);
     }
@@ -71,8 +78,8 @@ public class mainGUI extends JFrame{
     /**
      * Sets the theme
      *
-     * @param textColor Color of the text
-     * @param bgColor Color of the background
+     * @param textColor   Color of the text
+     * @param bgColor     Color of the background
      * @param borderColor Color of the borders
      */
     public void setTheme(Color textColor, Color bgColor, Color borderColor) {
@@ -94,17 +101,16 @@ public class mainGUI extends JFrame{
     }
 
     /**
-     *
-     * @param list List of the elements to be added to the box
+     * @param list    List of the elements to be added to the box
      * @param message Sets a custom message to output to console
-     * @param color Color of the console
+     * @param color   Color of the console
      * @param display Displays whether or not a message will be displayed
      * @return The String value of the chosen element
      * @throws InterruptedException Consequence of the Thread.sleep
      */
     public String setChoiceBox(ArrayList<String> list, String message, Color color, boolean display) throws InterruptedException {
         choiceBox.setVisible(true);
-        for (String s : list){
+        for (String s : list) {
             choiceBox.addItem(s);
         }
         consoleOutput.setForeground(color);
@@ -115,7 +121,8 @@ public class mainGUI extends JFrame{
         while (!clicked) {
             //noinspection BusyWait
             Thread.sleep(100);
-        } clicked = false;
+        }
+        clicked = false;
         int choice = choiceBox.getSelectedIndex();
         choiceBox.setVisible(false);
         button.setVisible(false);
@@ -124,7 +131,7 @@ public class mainGUI extends JFrame{
     }
 
     // Initializer
-    public mainGUI(){
+    public mainGUI() {
         // Menu bar
         menuBar = new JMenuBar();
         settings = new JMenu("Settings");
@@ -164,19 +171,21 @@ public class mainGUI extends JFrame{
             @Override
             public void keyPressed(KeyEvent e) { // Detects if a key is pressed
                 super.keyPressed(e);
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){ // Detects if the key pressed is Enter
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) { // Detects if the key pressed is Enter
                     setPressed(true);
                     input = textField1.getText();
                     textField1.setText("");
                 }
             }
-        }); sliderSize.addChangeListener(e -> { // Detects if the slider state changed
-            JSlider source = (JSlider)e.getSource();
+        });
+        sliderSize.addChangeListener(e -> { // Detects if the slider state changed
+            JSlider source = (JSlider) e.getSource();
             if (!source.getValueIsAdjusting()) {
                 int size = source.getValue();
                 label1.setFont(setFontSize(size)); // Sets the font size according to the value of the slider
             }
-        }); button.addActionListener(e -> clicked = true); // Button clicked detection
+        });
+        button.addActionListener(e -> clicked = true); // Button clicked detection
         exportNotes.addActionListener(e -> { // Exports notes to .txt File
             String content = notes.getText();
             JFrame parentFrame = new JFrame();
@@ -202,7 +211,7 @@ public class mainGUI extends JFrame{
         dark.addActionListener(e -> setTheme(GOLD, GREY, Color.lightGray));
         light.addActionListener(e -> setTheme(BLACK, WHITE, GREY));
         about.addActionListener(e -> {
-            JOptionPane optionPane = new JOptionPane("<html>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.6</html>",
+            JOptionPane optionPane = new JOptionPane("<html>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.8</html>",
                     JOptionPane.INFORMATION_MESSAGE);
             JDialog dialog = optionPane.createDialog("About");
             dialog.setIconImage(icon.getImage());
@@ -215,22 +224,28 @@ public class mainGUI extends JFrame{
             @Override
             public void windowOpened(WindowEvent e) {
             }
+
             @Override
             public void windowClosing(WindowEvent e) {
             }
+
             @Override
             public void windowClosed(WindowEvent e) {
                 System.exit(1);
             }
+
             @Override
             public void windowIconified(WindowEvent e) {
             }
+
             @Override
             public void windowDeiconified(WindowEvent e) {
             }
+
             @Override
             public void windowActivated(WindowEvent e) {
             }
+
             @Override
             public void windowDeactivated(WindowEvent e) {
             }
