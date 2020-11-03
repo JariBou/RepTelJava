@@ -39,9 +39,7 @@ public class mainGUI extends JFrame {
     JMenu theme;
     JMenuItem dark, light, about;
 
-
     WriteEng w = new WriteEng();
-
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
 
     public Font setFontSize(int size) { // Changes the font size, used for button
