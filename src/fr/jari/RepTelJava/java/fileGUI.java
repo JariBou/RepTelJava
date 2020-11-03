@@ -5,7 +5,6 @@ import java.awt.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
 public class fileGUI extends JFrame {
     private JPanel mainPanel;
     public JLabel display;
@@ -20,7 +19,6 @@ public class fileGUI extends JFrame {
         String imPath = currentRelativePath.toAbsolutePath().toString();
         ImageIcon icon = new ImageIcon(imPath + "/icons/mainIcon.png");
         setIconImage(icon.getImage());
-        setTitle("RepTel.java");
         add(mainPanel);
         scroll.setViewportView(display);// Set the viewport view only when the panel has been initialized
         scroll.getVerticalScrollBar().setUnitIncrement(10);
