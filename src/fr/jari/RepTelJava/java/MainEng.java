@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 
 @SuppressWarnings("BusyWait")
@@ -100,8 +98,13 @@ public class MainEng {
         f.setPressed(false);
     }
 
+
     // Main
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args, String language, String country) throws IOException, InterruptedException {
+
+        LangFunctions lang = new LangFunctions();
+        ResourceBundle rb = lang.setLang(language, country);
+
         Color GREEN = Color.green;
         Color RED = Color.red;
         // GUI init
@@ -119,7 +122,7 @@ public class MainEng {
         while (true) {
             // Search for files in directory ----------------------------
             boolean hasFiles = false;
-            f.label2.setText("Current file:  Unknown");
+            f.label2.setText(lang.get("curr_file") + "  Unknown");
             StringBuilder files = new StringBuilder();
             ArrayList<String> filesList = new ArrayList<>();
             File folder = new File(path);
@@ -140,11 +143,11 @@ public class MainEng {
             }
 
             if (!hasFiles) { // New file since no pre-existing file
-                f.setConsoleOutput("> No existing Files", RED);
+                f.setConsoleOutput("> " + lang.get("no_files"), RED);
                 createFile(f, w, r);
             }
             if (hasFiles) { // Selection of the file
-                f.label1.setText("<html> Which file do you wish to access? " + files + " </html>");
+                f.label1.setText("<html>" + lang.get("file_access") + files + " </html>");
                 while (!f.isPressed()) {
                     Thread.sleep(100);
                 }
@@ -153,7 +156,7 @@ public class MainEng {
                     w.setFilename(file);
                     r.setFilename(file);
                 } else {
-                    f.setConsoleOutput(("> File " + file + ".txt doesn't exist, Create?"), RED);
+                    f.setConsoleOutput((">" + lang.get("file")  + file + lang.get("create_file")), RED);
                     String newFile = f.setChoiceBox(new ArrayList<>(Arrays.asList("Yes", "No")), false);
                     if (newFile.equals("Yes")) {
                         createFile(f, w, r);
@@ -167,9 +170,8 @@ public class MainEng {
             // Menu loop, used to change the file
             while (true) {
                 // Menu display
-                f.label2.setText("Current file:  " + w.getFilename());
-                f.label1.setText("<html>0 - Quit <br/> 1 - Write <br/> 2 - Read <br/> 3 - Get number of persons <br/> " +
-                        "4 - Create new file <br/> 5 - Switch File </html>");
+                f.label2.setText(lang.get("curr_file") + w.getFilename());
+                f.label1.setText(lang.get("main_menu"));
                 f.consoleOutput.setText("> ");
                 //------------------------------------------------
                 while (!f.isPressed()) {

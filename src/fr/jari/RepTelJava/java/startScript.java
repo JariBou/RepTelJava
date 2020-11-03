@@ -8,16 +8,10 @@ public class startScript {
         startGui st = new startGui();
         st.setVisible(true);
         String language = st.setChoiceBox();
-        if (language.equals("Français")){
-            st.setVisible(false);
-            st.dispose();
-            MainFr.main(args);
-        }
-        if (language.equals("English")){
-            st.setVisible(false);
-            st.dispose();
-            MainEng.main(args);
-        }
+        String lang = "eng";
+        if (language.equals("Français")){lang = "fr";}
+        st.setVisible(false);
+        st.dispose();
+        MainEng.main(args, lang, lang.toUpperCase());
     }
-
 }
