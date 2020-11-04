@@ -5,12 +5,28 @@ import java.util.ResourceBundle;
 
 public class LangFunctions {
     private ResourceBundle rb;
+    public String language;
+    public String country;
 
-    public ResourceBundle setLang(String language, String country){
+    public String getLanguage(){
+        return this.language;
+    }
+    public void setLanguage(String language){
+        this.language = language;
+    }
+
+    public String getCountry(){
+        return this.country;
+    }
+    public void setCountry(String country){
+        this.country = country;
+    }
+
+
+    public void setLang(String language, String country){
         Locale.setDefault(new Locale(language, country));
         ResourceBundle rb = ResourceBundle.getBundle("lang/bank/language");
-        this.rb = rb;
-        return rb;
+        this.rb = rb; setLanguage(language);
     }
 
     public String get(String key){

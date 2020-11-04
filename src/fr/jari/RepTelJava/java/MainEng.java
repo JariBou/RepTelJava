@@ -16,8 +16,8 @@ public class MainEng {
     public static void displayWrite(mainGUI f, WriteEng w) throws InterruptedException {
         f.setConsoleOutput("> ------------------", w.color);
         Thread.sleep(500);
-        f.consoleOutput.setText("> " + w.output);
-        w.output = "";
+        f.consoleOutput.setText("> " + w.output); // for the lang implementation:  lang.get(w.output)
+        w.output = "";                            // Basically w.output return the key to read the property files
     }
 
     // Default setup
@@ -101,18 +101,19 @@ public class MainEng {
 
     // Main
     public static void main(String[] args, String language, String country) throws IOException, InterruptedException {
-
+        System.out.println(args.length);
         LangFunctions lang = new LangFunctions();
-        ResourceBundle rb = lang.setLang(language, country);
+        lang.setLanguage(language); lang.setCountry(country);
+        lang.setLang(language, country);
 
         Color GREEN = Color.green;
         Color RED = Color.red;
         // GUI init
-        mainGUI f = new mainGUI();
+        mainGUI f = new mainGUI(language, country);
         f.setVisible(true);
         f.setPressed(false);
         // Write and Read init
-        WriteEng w = new WriteEng();
+        WriteEng w = new WriteEng(language, country);
         Read r = new Read();
         // Path query
         Path currentRelativePath = Paths.get("");
@@ -128,7 +129,7 @@ public class MainEng {
             File folder = new File(path);
             File[] listOfFiles = folder.listFiles();
             if (listOfFiles == null) {
-                files.append("<br/ ").append(" No files");
+                files.append("<br/ ").append(lang.get("no_files"));
             }
             else {
                 for (File listOfFile : listOfFiles) {
@@ -157,8 +158,8 @@ public class MainEng {
                     r.setFilename(file);
                 } else {
                     f.setConsoleOutput((">" + lang.get("file")  + file + lang.get("create_file")), RED);
-                    String newFile = f.setChoiceBox(new ArrayList<>(Arrays.asList("Yes", "No")), false);
-                    if (newFile.equals("Yes")) {
+                    String newFile = f.setChoiceBox(new ArrayList<>(Arrays.asList(lang.get("yes"), lang.get("no"))), false);
+                    if (newFile.equals(lang.get("yes"))) {
                         createFile(f, w, r);
                     } else {
                         System.exit(0);
@@ -169,13 +170,26 @@ public class MainEng {
             menuloop:
             // Menu loop, used to change the file
             while (true) {
+                // Here we change the language if changed in the menu bar
+                lang.setLang(lang.getLanguage(), lang.getCountry());
+
+
                 // Menu display
                 f.label2.setText(lang.get("curr_file") + w.getFilename());
                 f.label1.setText(lang.get("main_menu"));
                 f.consoleOutput.setText("> ");
                 //------------------------------------------------
+
                 while (!f.isPressed()) {
                     Thread.sleep(100);
+                    if (f.langChange()){
+                        lang.setLang(f.getLang(), f.getCountry());
+                        lang.setLanguage(f.getLang()); lang.setCountry(f.getCountry());
+                        w.setLanguage(f.getLang(), f.getCountry());
+                        f.label2.setText(lang.get("curr_file") + w.getFilename());
+                        f.label1.setText(lang.get("main_menu"));
+                        f.rstLangChange();
+                    }
                 }
                 String choice = f.input;
                 f.setPressed(false);
@@ -188,7 +202,7 @@ public class MainEng {
                         File myRead = new File(r.getFilename());
                         while (true) {
                             Scanner myReader = new Scanner(myRead);
-                            f.label1.setText("Enter a name (0 to quit): ");
+                            f.label1.setText(lang.get("enter_name0"));
                             while (!f.isPressed()) {
                                 Thread.sleep(100);
                             }
@@ -196,13 +210,13 @@ public class MainEng {
                             if (name.equals("0")) {
                                 break;
                             }
-                            f.label1.setText("Enter a name: " + name);
+                            f.label1.setText(lang.get("enter_name1") + name);
                             ArrayList<String> filecontent = r.read(myReader);
                             myReader.close();
                             if (filecontent.contains(name)) {
-                                String add = f.setChoiceBox(new ArrayList<>(Arrays.asList("Yes", "No")), "> Name already assigned, add a number to that person? Y/N", RED);
+                                String add = f.setChoiceBox(new ArrayList<>(Arrays.asList(lang.get("yes"), lang.get("no"))), "> " + lang.get("name_assigned"), RED);
                                 f.setPressed(false);
-                                if (add.equals("Yes")) {
+                                if (add.equals(lang.get("yes"))) {
                                     FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
                                     boolean found = false;
                                     int start = filecontent.indexOf(name);

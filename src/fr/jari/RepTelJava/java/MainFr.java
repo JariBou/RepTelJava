@@ -68,7 +68,7 @@ public class MainFr {
         Color GREEN = Color.green;
         Color RED = Color.red;
         // GUI init
-        mainGUI f = new mainGUI();
+        mainGUI f = new mainGUI("","");
         f.setVisible(true);
         f.exportNotes.setText("Exporter notes");
         f.fontSizeLabel.setText("Taille texte:");

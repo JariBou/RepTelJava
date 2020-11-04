@@ -29,6 +29,11 @@ public class mainGUI extends JFrame {
     public String input; // Value of the Input Display
     public boolean pressed;
     public boolean clicked;
+    private boolean state;
+
+    public String Lang;
+    public String Country;
+
     Color GREY = Color.darkGray;
     Color GOLD = Color.orange;
     Color WHITE = Color.white;
@@ -36,8 +41,8 @@ public class mainGUI extends JFrame {
 
     JMenuBar menuBar;
     JMenu settings;
-    JMenu theme;
-    JMenuItem dark, light, about;
+    JMenu theme, langMenu;
+    JMenuItem dark, light, about, eng, fr;
 
     WriteEng w = new WriteEng();
     Font defaultFont = new Font("Arial", Font.PLAIN, 25);
@@ -53,6 +58,9 @@ public class mainGUI extends JFrame {
     public void setPressed(boolean state) { // Sets the boolean state of the enter key
         this.pressed = state;
     }
+
+    public String getLang(){return this.Lang;}
+    public String getCountry(){return this.Country;}
 
     // Default set
     public String setChoiceBox(ArrayList<String> list) throws InterruptedException {
@@ -128,20 +136,37 @@ public class mainGUI extends JFrame {
         return list.get(choice);
     }
 
+    public boolean langChange(){
+        return this.state;
+    }
+    public void rstLangChange(){
+        this.state = false;
+    }
+
     // Initializer
-    public mainGUI() {
+    public mainGUI(String language, String country) {
+        LangFunctions lang = new LangFunctions();
+        lang.setLang(language, country);
+        this.Lang = "eng"; this.Country = "ENG"; this.state = false;
+
         // Menu bar
         menuBar = new JMenuBar();
-        settings = new JMenu("Settings");
+        settings = new JMenu(lang.get("settings"));
         menuBar.add(settings);
         theme = new JMenu("Theme");
         settings.add(theme);
-        about = new JMenuItem("about");
-        settings.add(about);
         dark = new JMenuItem("Dark");
         light = new JMenuItem("Light");
         theme.add(dark);
         theme.add(light);
+        langMenu = new JMenu(lang.get("language"));
+        settings.add(langMenu);
+        eng = new JMenuItem("English");
+        fr = new JMenuItem("Français");
+        langMenu.add(eng);
+        langMenu.add(fr);
+        about = new JMenuItem(lang.get("about"));
+        settings.add(about);
         setJMenuBar(menuBar);
 
         // Default theme, and Visual Init
@@ -208,6 +233,18 @@ public class mainGUI extends JFrame {
         // Actions listeners of the toolBar elements
         dark.addActionListener(e -> setTheme(GOLD, GREY, Color.lightGray));
         light.addActionListener(e -> setTheme(BLACK, WHITE, GREY));
+
+        eng.addActionListener(e -> {
+            this.Lang = "eng"; this.Country = "ENG"; this.state = true;
+            lang.setLanguage(this.Lang); lang.setCountry(this.Country);
+            lang.setLang(this.Lang, this.Country);
+        });
+        fr.addActionListener(e -> {
+            this.Lang = "fr"; this.Country = "FR"; this.state = true;
+            lang.setLanguage(this.Lang); lang.setCountry(this.Country);
+            lang.setLang(this.Lang, this.Country);
+        });
+
         about.addActionListener(e -> {
             JOptionPane optionPane = new JOptionPane("<html>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.8</html>",
                     JOptionPane.INFORMATION_MESSAGE);

@@ -10,6 +10,18 @@ public class WriteEng {
     private String filename;
     public String output;
     public Color color;
+    private LangFunctions lang;
+
+
+    public WriteEng(){} // Basic initializer for MainGUI
+    public WriteEng(String language, String country){
+        this.lang = new LangFunctions();
+        lang.setLang(language, country);
+    }
+
+    public void setLanguage(String language, String country){
+        lang.setLang(language, country);
+    }
 
     /**
      * @param filename filename
@@ -47,18 +59,18 @@ public class WriteEng {
             }
             if (myObj.createNewFile()) {
                 this.color = Color.green;
-                this.output = "File created: " + myObj.getName();
+                this.output = lang.get("file_created") + myObj.getName();
                 System.out.println("File created: " + myObj.getName());
             } else {
                 this.color = Color.red;
-                this.output = "File " + myObj.getName() + " already exists";
+                this.output = lang.get("file_created") + myObj.getName() + lang.get("already_exists");
                 System.out.println("File already exists.");
             }
         }
         catch (IOException e) {
             System.out.println("An error occurred.");
             this.color = Color.red;
-            this.output = "An error occurred";
+            this.output = lang.get("error_occured");
             e.printStackTrace();
         } if (path!=null) {
             this.filename = filename + ".txt";
@@ -76,11 +88,11 @@ public class WriteEng {
             myWriter.write(content);
             System.out.println("Successfully wrote to the file.");
             this.color = Color.green;
-            this.output = "Successfully wrote to the file.";
+            this.output = lang.get("succes_write");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             this.color = Color.red;
-            this.output = "An error occurred";
+            this.output = lang.get("error_occured");
             e.printStackTrace();
         }
     }
