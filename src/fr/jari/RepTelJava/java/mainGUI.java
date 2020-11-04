@@ -213,7 +213,7 @@ public class mainGUI extends JFrame {
             String content = notes.getText();
             JFrame parentFrame = new JFrame();
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Specify a file to save");
+            fileChooser.setDialogTitle(lang.get("save_notes"));
             int userSelection = fileChooser.showSaveDialog(parentFrame);
             if (userSelection == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
@@ -246,9 +246,9 @@ public class mainGUI extends JFrame {
         });
 
         about.addActionListener(e -> {
-            JOptionPane optionPane = new JOptionPane("<html>Credits: <br/>Made by JariBou<br/><br/>Version: Beta 0.5.8</html>",
+            JOptionPane optionPane = new JOptionPane(lang.get("credits"),
                     JOptionPane.INFORMATION_MESSAGE);
-            JDialog dialog = optionPane.createDialog("About");
+            JDialog dialog = optionPane.createDialog(lang.get("about"));
             dialog.setIconImage(icon.getImage());
             dialog.setAlwaysOnTop(true); // to show top of all other application
             dialog.setVisible(true); // to visible the dialog
