@@ -185,7 +185,7 @@ public class mainGUI extends JFrame {
 
         // Gui Init
         add(rootPanel);
-        setTitle("RepTel.java");
+        setTitle("RepTel         {Beta 0.6.0}");
         setSize(800, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
