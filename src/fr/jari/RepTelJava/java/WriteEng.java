@@ -70,7 +70,7 @@ public class WriteEng {
         catch (IOException e) {
             System.out.println("An error occurred.");
             this.color = Color.red;
-            this.output = lang.get("error_occured");
+            this.output = lang.get("error_occurred");
             e.printStackTrace();
         } if (path!=null) {
             this.filename = filename + ".txt";
@@ -88,11 +88,11 @@ public class WriteEng {
             myWriter.write(content);
             System.out.println("Successfully wrote to the file.");
             this.color = Color.green;
-            this.output = lang.get("succes_write");
+            this.output = lang.get("success_write");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             this.color = Color.red;
-            this.output = lang.get("error_occured");
+            this.output = lang.get("error_occurred");
             e.printStackTrace();
         }
     }

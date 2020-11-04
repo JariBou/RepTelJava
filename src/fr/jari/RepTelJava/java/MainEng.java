@@ -21,17 +21,17 @@ public class MainEng {
     }
 
     // Default setup
-    public static void buttonActions(mainGUI f) throws InterruptedException {
-        buttonActions(f, null, Color.green);
+    public static void buttonActions(mainGUI f, LangFunctions lang) throws InterruptedException {
+        buttonActions(f, null, Color.green, lang);
     }
 
     // Button interactions
-    public static void buttonActions(mainGUI f, String text, Color color) throws InterruptedException {
+    public static void buttonActions(mainGUI f, String text, Color color, LangFunctions lang) throws InterruptedException {
         f.consoleOutput.setForeground(color);
         if (text != null) {
             f.consoleOutput.setText("> " + text);
         } else {
-            f.consoleOutput.setText("> Click on the 'Ok' button to exit to Menu");
+            f.consoleOutput.setText("> " + lang.get("button_console"));
         }
         f.button.setVisible(true);
         while (!f.clicked) {
@@ -215,6 +215,12 @@ public class MainEng {
                             myReader.close();
                             if (filecontent.contains(name)) {
                                 String add = f.setChoiceBox(new ArrayList<>(Arrays.asList(lang.get("yes"), lang.get("no"))), "> " + lang.get("name_assigned"), RED);
+
+                                if (!lang.getLanguage().equals("eng")){
+                                    if (add.equals(lang.get("yes"))){ add = "yes";}
+                                    else if (add.equals(lang.get("no"))){ add = "no";}
+                                }
+
                                 f.setPressed(false);
                                 if (add.equals(lang.get("yes"))) {
                                     FileWriter myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
@@ -225,7 +231,7 @@ public class MainEng {
                                             if (!testType(i)) {
                                                 int pos = filecontent.indexOf(i);
                                                 f.consoleOutput.setText("> ");
-                                                f.label1.setText("<html> " + f.label1.getText() + " <br/> Enter a number: </html>");
+                                                f.label1.setText("<html> " + f.label1.getText() + lang.get("enter_number"));
                                                 while (!f.isPressed()) {
                                                     Thread.sleep(100);
                                                 }
@@ -252,7 +258,7 @@ public class MainEng {
                             else {
                                 FileWriter myWriter = new FileWriter(filename, true); // if not you good bruv
                                 f.setPressed(false);
-                                f.label1.setText("<html> " + f.label1.getText() + " <br/> Enter a number: </html>");
+                                f.label1.setText("<html> " + f.label1.getText() + lang.get("enter_number"));
                                 while (!f.isPressed()) {
                                     Thread.sleep(100);
                                 }
@@ -273,7 +279,7 @@ public class MainEng {
                     case "2" -> { // Search in file
                         FileWriter myWriter;
                         StringBuilder filecontentStr;
-                        f.label1.setText("Enter the person's name to search for: "); // add smth to chnge the text displayed when there is only 1 number
+                        f.label1.setText(lang.get("search_pers")); // add smth to chnge the text displayed when there is only 1 number
                         File myRead = new File(r.getFilename());
                         Scanner myReader = new Scanner(myRead);
                         ArrayList<String> fileContent = r.read(myReader);
@@ -282,7 +288,7 @@ public class MainEng {
                         myReader.close();
                         while (true) {
                             boolean found = false;
-                            String searchE;
+                            String searchE = "";
                             while (!f.isPressed()) {
                                 Thread.sleep(100);
                             }
@@ -291,8 +297,8 @@ public class MainEng {
                             int start = fileContent.indexOf(search);
                             int count = 0;
                             if (start == -1) {
-                                buttonActions(f, "Person not found, click 'Ok' to try again", RED);
-                                f.setConsoleOutput("> Please enter a name", GREEN);
+                                buttonActions(f, lang.get("button_persNotF"), RED, lang);
+                                f.setConsoleOutput("> " + lang.get("enter_name"), GREEN);
                             }
                             else {
                                 for (String i : fileContent.subList(start, fileContent.size())) {
@@ -309,156 +315,199 @@ public class MainEng {
                                         found = true;
                                     }
                                 }
-                                String p;
-                                if (search.endsWith("s")) {
-                                    searchE = search + "'";
-                                } else {
-                                    searchE = search + "'s";
+                                String p, q;
+                                switch (lang.getLanguage()){
+
+                                    case "eng"-> {
+                                        if (search.endsWith("s")) {
+                                            searchE = search + "'";
+                                        } else {
+                                            searchE = search + "'s";
+                                        }
+                                        if (numbers.length() > 1) {
+                                            p = "them?";
+                                            q = " numbers are:";
+                                        } else {
+                                            p = "it?";
+                                            q = " number is";
+                                        }
+
+                                        f.label1.setText("<html>" + searchE + q + numbers + "<br/" + "Do you want to modify "
+                                                + p + "<br/> <html/>");
+                                    }
+
+                                    case "fr" -> {
+                                        if (numbers.length() > 1) {
+                                            p = "les";
+                                            q = " sont:";
+                                        } else {
+                                            p = "le";
+                                            q = " est:";
+                                        }
+                                        searchE = search;
+                                        f.label1.setText("<html>" + capitalize(p) + " numéros de " + search + q + numbers + "<br/" + "Voulez-vous "
+                                                + p + " modifier?" + "<br/> <html/>");
+                                    }
                                 }
 
-                                if (numbersList.size() > 1) {
-                                    searchE += " numbers are: ";
-                                    p = "them";
+                                choice = f.setChoiceBox(new ArrayList<>(Arrays.asList(lang.get("no"), lang.get("yes"))));
+
+                                if (!choice.equals("eng")){if (choice.equals(lang.get("yes"))){choice = "Yes";}}
+
+                                if (choice.equals("Yes")){
+                                    f.label1.setText("<html>" + search + numbers + "<br/" + lang.get("choose_opt") +
+                                            "<br/>" + lang.get("mod_numb")  + lang.get("add_numb") + lang.get("rem_number")
+                                            + lang.get("delete_pers") + " <html/>");
                                 } else {
-                                    searchE += " number is: ";
-                                    p = "it";
+                                    break switchloop;
                                 }
 
-                                f.label1.setText("<html>" + searchE + numbers + "<br/" + "Do you want to modify "
-                                        + p + "? M/N" + "<br/>" + " <html/>");
-                                choice = f.setChoiceBox(new ArrayList<>(Arrays.asList("No", "Yes")));
-                                if (choice.equals("Yes")) {
-                                    f.label1.setText("<html>" + searchE + numbers + "<br/" + "Choose your option from the list:" +
-                                            "<br/>" + "- Modify a number <br/>" + "- Add a number <br/>" + "- Remove a number <br/>"
-                                            + "- Delete the person <br/>" + " <html/>");
-                                    choice = f.setChoiceBox(new ArrayList<>(Arrays.asList("modify", "add", "remove", "delete")));
-                                    myRead = new File(r.getFilename());
-                                    myReader = new Scanner(myRead);
-                                    String filename = w.getFilename();
-                                    ArrayList<String> filecontent = r.read(myReader);
-                                    myReader.close();
-                                    switch (choice) {
-                                        case "modify" -> {
+                                choice = f.setChoiceBox(new ArrayList<>(Arrays.asList(lang.get("modify"), lang.get("add"), lang.get("remove"), lang.get("delete"))));
+                                if (!lang.getLanguage().equals("eng")){
+                                    if (choice.equals(lang.get("modify"))){ choice = "modify";}
+                                    else if (choice.equals(lang.get("add"))){choice = "add";}
+                                    else if (choice.equals(lang.get("remove"))){choice = "remove";}
+                                    else if (choice.equals(lang.get("delete"))){choice = "delete";}
+                                } else{
+                                    choice = choice.toLowerCase();
+                                }
+
+                                myRead = new File(r.getFilename());
+                                myReader = new Scanner(myRead);
+                                String filename = w.getFilename();
+                                ArrayList<String> filecontent = r.read(myReader);
+                                myReader.close();
+                                switch (choice) {
+                                    case "modify" -> {
+                                        if (lang.getLanguage().equals("eng")) {
                                             f.label1.setText("<html>" + searchE + " numbers are: " + numbers + "<html/>"); // print the numbers with an associated number
-                                            int hardCount = 1;
-                                            ArrayList<String> countNumb = new ArrayList<>();
-                                            while (hardCount <= count) {
-                                                countNumb.add(Integer.toString(hardCount));
-                                                hardCount++;
-                                            }
-                                            int posN = Integer.parseInt(f.setChoiceBox(countNumb));
-                                            for (int per = fileContent.indexOf(search); per < filecontent.size(); per++) {
-                                                if (fileContent.get(per).equals(numbersList.get(posN - 1))) {
-                                                    //then you modify this one filecontent.set(per)
-                                                    f.setConsoleOutput("> Enter the new number", GREEN);
-                                                    while (!f.isPressed()) {
-                                                        Thread.sleep(100);
-                                                    }
-                                                    String newNumber = f.input;
-                                                    fileContent.set(per, newNumber);
-                                                    myWriter = new FileWriter(filename, false);
-                                                    filecontentStr = new StringBuilder();
-                                                    for (String a : fileContent) {
-                                                        filecontentStr.append(a).append("\n");
-                                                    }
-                                                    w.write(filecontentStr.toString(), myWriter);
-                                                    myWriter.close();
-                                                    break;
-                                                }
-                                            }
-                                        } // not yet fixed; case of duplicate numbers
-                                        case "add" -> {
-                                            found = false;
-                                            start = filecontent.indexOf(search);
-                                            for (String line : filecontent.subList(start, filecontent.size())) {
-                                                if (found) {
-                                                    if (!testType(line)) {
-                                                        myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
-                                                        int pos = filecontent.indexOf(line);
-                                                        f.label1.setText("Enter the number you wish to add");
-                                                        while (!f.isPressed()) {
-                                                            Thread.sleep(100);
-                                                        }
-                                                        String number = f.input;
-                                                        filecontent.add(pos, number);
-                                                        f.setPressed(false);
-                                                        filecontentStr = new StringBuilder();
-                                                        for (String k : filecontent) {
-                                                            filecontentStr.append(k).append("\n");
-                                                        }
-                                                        w.write(filecontentStr.toString(), myWriter);
-                                                        displayWrite(f, w);
-                                                        myWriter.close();
-                                                        break;
-                                                    }
-                                                }
-                                                if (search.equals(line)) {
-                                                    found = true;
-                                                }
-                                            }
-                                            if (found) {
-                                                myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
-                                                int pos = filecontent.size();
-                                                f.label1.setText("Enter the number you wish to add");
+                                        } else {
+                                            f.label1.setText("<html>Les numéros de " + searchE + " sont: " + numbers + "<html/>");
+                                        }
+                                        int hardCount = 1;
+                                        ArrayList<String> countNumb = new ArrayList<>();
+                                        while (hardCount <= count) {
+                                            countNumb.add(Integer.toString(hardCount));
+                                            hardCount++;
+                                        }
+                                        int posN = Integer.parseInt(f.setChoiceBox(countNumb));
+                                        for (int per = fileContent.indexOf(search); per < filecontent.size(); per++) {
+                                            if (fileContent.get(per).equals(numbersList.get(posN - 1))) {
+                                                //then you modify this one filecontent.set(per)
+                                                f.setConsoleOutput("> " + lang.get("enter_newNumber"), GREEN);
                                                 while (!f.isPressed()) {
                                                     Thread.sleep(100);
                                                 }
-                                                String number = f.input;
-                                                filecontent.add(pos, number);
-                                                f.setPressed(false);
+                                                String newNumber = f.input;
+                                                fileContent.set(per, newNumber);
+                                                myWriter = new FileWriter(filename, false);
                                                 filecontentStr = new StringBuilder();
-                                                for (String k : filecontent) {
-                                                    filecontentStr.append(k).append("\n");
+                                                for (String a : fileContent) {
+                                                    filecontentStr.append(a).append("\n");
                                                 }
                                                 w.write(filecontentStr.toString(), myWriter);
-                                                displayWrite(f, w);
                                                 myWriter.close();
+                                                break;
                                             }
-                                        } // working
-                                        case "remove" -> {
-                                            f.label1.setText("<html>" + searchE + " numbers are: " + numbers + "<html/>"); // print the numbers with an associated number
-                                            int hardCountR = 1;
-                                            ArrayList<String> countNumbR = new ArrayList<>();
-                                            while (hardCountR <= count) {
-                                                countNumbR.add(Integer.toString(hardCountR));
-                                                hardCountR++;
-                                            }
-                                            int posNR = Integer.parseInt(f.setChoiceBox(countNumbR));
-                                            filecontent.remove(numbersList.get(posNR - 1)); // problem if there are 2 numbers that are the same
-                                            f.setConsoleOutput("> Number removed", GREEN);
-                                            Thread.sleep(500);
-                                            myWriter = new FileWriter(filename, false);
-                                            filecontentStr = new StringBuilder();
-                                            for (String o : filecontent) {
-                                                filecontentStr.append(o).append("\n");
-                                            }
-                                            w.write(filecontentStr.toString(), myWriter);
-                                            myWriter.close();
-                                        } // not yet fixed; case of duplicate numbers
-                                        case "delete" -> {
-                                            found = false;
-                                            filecontentStr = new StringBuilder();
-                                            myWriter = new FileWriter(filename, false);
-                                            for (String content : filecontent) {
-                                                if (found) {
-                                                    if (!testType(content)) {
-                                                        found = false;
+                                        }
+                                    } // not yet fixed; case of duplicate numbers
+                                    case "add" -> {
+                                        found = false;
+                                        start = filecontent.indexOf(search);
+                                        for (String line : filecontent.subList(start, filecontent.size())) {
+                                            if (found) {
+                                                if (!testType(line)) {
+                                                    myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                                    int pos = filecontent.indexOf(line);
+                                                    f.label1.setText(lang.get("add_number"));
+                                                    while (!f.isPressed()) {
+                                                        Thread.sleep(100);
                                                     }
+                                                    String number = f.input;
+                                                    filecontent.add(pos, number);
+                                                    f.setPressed(false);
+                                                    filecontentStr = new StringBuilder();
+                                                    for (String k : filecontent) {
+                                                        filecontentStr.append(k).append("\n");
+                                                        System.out.println("Building String");
+                                                    }
+                                                    w.write(filecontentStr.toString(), myWriter);
+                                                    displayWrite(f, w);
+                                                    myWriter.close();
+                                                    System.out.println("Breaking");
+                                                    break switchloop;
                                                 }
-                                                if (content.equals(search)) {
-                                                    found = true;
-                                                }
-                                                if (!found) {
-                                                    filecontentStr.append(content).append("\n");
-                                                }
+                                            }
+                                            if (search.equals(line)) {
+                                                found = true;
+                                            }
+                                        }
+                                        if (found) {
+                                            myWriter = new FileWriter(filename, false); // if contained need to rewrite everything
+                                            int pos = filecontent.size();
+                                            f.label1.setText(lang.get("add_number"));
+                                            while (!f.isPressed()) {
+                                                Thread.sleep(100);
+                                            }
+                                            String number = f.input;
+                                            filecontent.add(pos, number);
+                                            f.setPressed(false);
+                                            filecontentStr = new StringBuilder();
+                                            for (String k : filecontent) {
+                                                filecontentStr.append(k).append("\n");
                                             }
                                             w.write(filecontentStr.toString(), myWriter);
                                             displayWrite(f, w);
                                             myWriter.close();
-                                            f.setConsoleOutput("> That person has been successfully deleted", GREEN);
-                                            Thread.sleep(500);
-                                        } // working
-                                    }
+                                        }
+                                    } // working
+                                    case "remove" -> {
+                                        if (lang.getLanguage().equals("eng")) {
+                                            f.label1.setText("<html>" + searchE + " numbers are: " + numbers + "<html/>"); // print the numbers with an associated number
+                                        } else {
+                                            f.label1.setText("<html>Les numéros de " + searchE + " sont: " + numbers + "<html/>");
+                                        }
+                                        int hardCountR = 1;
+                                        ArrayList<String> countNumbR = new ArrayList<>();
+                                        while (hardCountR <= count) {
+                                            countNumbR.add(Integer.toString(hardCountR));
+                                            hardCountR++;
+                                        }
+                                        int posNR = Integer.parseInt(f.setChoiceBox(countNumbR));
+                                        filecontent.remove(numbersList.get(posNR - 1)); // problem if there are 2 numbers that are the same
+                                        f.setConsoleOutput("> " + lang.get("number_removed"), GREEN);
+                                        Thread.sleep(500);
+                                        myWriter = new FileWriter(filename, false);
+                                        filecontentStr = new StringBuilder();
+                                        for (String o : filecontent) {
+                                            filecontentStr.append(o).append("\n");
+                                        }
+                                        w.write(filecontentStr.toString(), myWriter);
+                                        myWriter.close();
+                                    } // not yet fixed; case of duplicate numbers
+                                    case "delete" -> {
+                                        found = false;
+                                        filecontentStr = new StringBuilder();
+                                        myWriter = new FileWriter(filename, false);
+                                        for (String content : filecontent) {
+                                            if (found) {
+                                                if (!testType(content)) {
+                                                    found = false;
+                                                }
+                                            }
+                                            if (content.equals(search)) {
+                                                found = true;
+                                            }
+                                            if (!found) {
+                                                filecontentStr.append(content).append("\n");
+                                            }
+                                        }
+                                        w.write(filecontentStr.toString(), myWriter);
+                                        displayWrite(f, w);
+                                        myWriter.close();
+                                        f.setConsoleOutput("> " + lang.get("delete_success"), GREEN);
+                                        Thread.sleep(500);
+                                    } // working
                                 }
                                 break switchloop;
                             }
@@ -478,15 +527,18 @@ public class MainEng {
                                 count++;
                             }
                         }
-                        f.label1.setText("<html> The number of persons stored is: " + count + " <br/> Do you want to know their names? Y/N </html>");
-                        String name = f.setChoiceBox(new ArrayList<>(Arrays.asList("Y", "N")));
-                        if (name.equals("Y")) {
+                        f.label1.setText("<html>" + lang.get("number_pStored") + count + lang.get("know_names") + "<br/></html>");
+                        String name = f.setChoiceBox(new ArrayList<>(Arrays.asList(lang.get("yes"), lang.get("no"))));
+                        if (!lang.getLanguage().equals("eng")){
+                            if (name.equals(lang.get("yes"))){ name = "yes";}
+                        }
+                        if (name.equals("yes")) {
                             StringBuilder strNames = new StringBuilder();
                             for (String s : names) {
                                 strNames.append(" <br/> - ").append(s);
                             }
-                            f.label1.setText("<html> Their names are: " + strNames + "<html/>");      // When too much names problem, they all on same line, and they appear as lists
-                            buttonActions(f);
+                            f.label1.setText("<html>"+ lang.get("their_names") + strNames + "<html/>");      // When too much names problem, they all on same line, and they appear as lists
+                            buttonActions(f, lang);
                         }
                         f.setPressed(false);
                     }
@@ -509,7 +561,7 @@ public class MainEng {
                                 filecontent.append("<br/><br/>").append(line).append(" :");
                             }
                             if (first) {
-                                filecontent.append("List of Names:<br/><br/>").append(line).append(" :");
+                                filecontent.append(lang.get("list_of_names")).append("<br/><br/>").append(line).append(" :");
                                 first = false;
                             }
                             if (testType(line)) {
