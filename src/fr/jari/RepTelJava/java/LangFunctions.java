@@ -25,8 +25,7 @@ public class LangFunctions {
 
     public void setLang(String language, String country){
         Locale.setDefault(new Locale(language, country));
-        ResourceBundle rb = ResourceBundle.getBundle("lang/bank/language");
-        this.rb = rb; setLanguage(language);
+        this.rb = ResourceBundle.getBundle("lang/bank/language"); setLanguage(language);
     }
 
     public String get(String key){
